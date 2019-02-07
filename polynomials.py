@@ -169,9 +169,7 @@ class polynomial:
          del self.variables[delete-index_update]
          del self.powers[delete-index_update]
          index_update+=1
-            
-                  
-            
+
 
    def reduce(self):
       # eliminate repetitve terms
@@ -197,7 +195,26 @@ class polynomial:
          return [1,2,3,4]
       
       
-   
+   def evaluate(self, values):
+      # values is a dictionary holding the values of each variable
+      # eg. values = {"x":2, "y":4.5}
+      # evaluate the polynomials at the given variable values
+
+      running_total = 0
+
+      # go through all the terms of the poly
+      for term_index in range(len(self.coeffs)):
+         term_total = self.coeffs[term_index]
+
+         # multiply the coefficient of the term by the variables (evaluated) at their given power
+         for variable_index in range(len(self.variables[term_index])):
+            term_total *= values[self.variables[term_index][variable_index]]**self.powers[term_index][variable_index]
+
+         # sum all the term values
+         running_total += term_total
+
+      return running_total
+         
 
 
    def from_roots(roots, variables="x"):
