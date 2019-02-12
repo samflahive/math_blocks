@@ -25,8 +25,8 @@ class exponential:
 
      def evaluate(self):
          # extract the value of the base whether its a number or variable
-         base_value = self.base if isinstance(self.base, (int, float, complex)) else self.base.value
-         power_value = self.power if isinstance(self.power, (int, float, complex)) else self.power.value
+         base_value = self.base if isinstance(self.base, (int, float, complex)) else self.base.evaluate()
+         power_value = self.power if isinstance(self.power, (int, float, complex)) else self.power.evaluate()
          return base_value**power_value
 
 
@@ -38,6 +38,6 @@ class exponential:
 
      def latex(self):
           # extract the value of the base whether its a number or variable
-          base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.symbol
-          power_symbol = self.power if isinstance(self.power, (int, float, complex)) else self.power.symbol
+          base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.latex()
+          power_symbol = self.power if isinstance(self.power, (int, float, complex)) else self.power.latex()
           return "{}^{}".format(base_symbol, power_symbol)

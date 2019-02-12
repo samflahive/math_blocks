@@ -1,13 +1,15 @@
-from polynomials import polynomial
-from exponentials import exponential
-from variables import variable
+from polynomials import polynomial as poly
+from exponentials import exponential as exp
+from logarithms import logarithm as log
+from variables import variable as var
 
-x = variable("x")
+x = var("x")
 
-exp = exponential(2, x)
+two_x = exp(2, x)
+logger = log(two_x, 2)
 
 x.value = 3
 
-print(exp.evaluate())
+print("{}={}".format(two_x.latex(), two_x.evaluate()))
 
-print(exp.latex())
+print("{}={}".format(logger.latex(), logger.evaluate()))
