@@ -22,7 +22,12 @@ class exponential:
 
          # create the resulting exponential
          return exponential(self.base, self.power+same_base.power)
-
+     def __eq__(self, other):
+          # equality operator ==
+          if not isinstance(other, (exponential)):
+               return False
+          return self.base == other.base and self.power == other.power
+     
      def evaluate(self):
          # extract the value of the base whether its a number or variable
          base_value = self.base if isinstance(self.base, (int, float, complex)) else self.base.evaluate()
@@ -41,3 +46,34 @@ class exponential:
           base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.latex()
           power_symbol = self.power if isinstance(self.power, (int, float, complex)) else self.power.latex()
           return "{}^{}".format(base_symbol, power_symbol)
+
+     def combine_by_base(exps):
+          # exps is a list of exponential
+          # combine all exponentials within exps that have the same base
+          # return a list of these combined exponentials
+          target_index = 0
+          length = len(exps)
+          while target_index < length:
+               length = exponential.combine_by_base_from_index(exps, target_index)
+               target_index += 1
+
+     def combine_by_base_from_index(exps, const_index):
+          # combine with the exp at exp[index] all exps after it that share its base
+          moving_index = const_index+1
+          length = len(exps)
+          while moving_index < length:
+               # same base
+               if exps[const_index].base == exps[moving_index].base:
+                    # merge
+                    exps[const_index].power += exps[moving_index].power
+                    # delete
+                    del exps[moving_index]
+                    # reduce length to avoid index out of range error
+                    length -= 1
+               else:
+                    # move the index along to access the next exp
+                    moving_index += 1
+          return length
+
+
+               
