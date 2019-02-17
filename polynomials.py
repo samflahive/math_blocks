@@ -1,4 +1,6 @@
+import variables
 from products import product
+import exponentials
 
 class polynomial:
    # functionality
@@ -23,7 +25,7 @@ class polynomial:
       terms = self.terms+other.terms
       return polynomial(coeffs=coeffs, terms=terms)
 
-   def __mult__(self, other):
+   def __mul__(self, other):
       # combine the roots
       if self.roots_known and other.roots_known:
          roots = self.roots + other.roots
@@ -35,9 +37,9 @@ class polynomial:
          new_terms = []
          # multiply each left hand side (lhs) term by each right hand side term
          for lhs_term_index in range(len(self.terms)):
+            
             lhs_term = self.terms[lhs_term_index]
             lhs_coeff = self.coeffs[lhs_term_index]
-            
             for rhs_term_index in range(len(other.terms)):
                rhs_term = other.terms[rhs_term_index]
                rhs_coeff = other.coeffs[rhs_term_index]
@@ -46,7 +48,7 @@ class polynomial:
                result_term = lhs_term*rhs_term
                # fix the order
                result_term.arrange()
-               new_coeffs.append(result_term)
+               new_coeffs.append(result_coeff)
                new_terms.append(result_term)
          return polynomial(coeffs=new_coeffs, terms=new_terms)
                
@@ -67,35 +69,32 @@ class polynomial:
 
       for term in self.terms:
          # 1)
-         term.reduce();
-      # 2)
-      self.combine_variable_powers()
+         term.reduce()
 
-   def combine_variable_powers(self):
-      # if variables and powers match perfectly between 2 terms - merge them
-      target_index = 0
-      length = len(self.terms)
-      while target_index < length:
-         length = self.combine_variable_powers_from_index(target_index)
-         target_index += 1
+   def from_roots(roots):
+      # create a polynomial that represents a factor for the first root
+      poly = polynomial.root_to_factor(roots[0])
+      
+      # create a polynomial factor for each subsequent root and multiply it to the existing one
+      for root in roots[1:]:
+         poly*=polynomial.root_to_factor(root)
+      poly.roots_know = True
+      poly.roots = roots
+      #poly.reduce()
+      return poly
+
+   def root_to_factor(root):
+      # root is a tuple or list of a variable and value, eg (x, 4)
+      # this means x at the value of 4 is a root of some polynomial
+      # this function turns the root into a factor and returns it as a polynomial object
+      # eg. x - 4
+      # 1, -4
+      coeffs = [1, -root[1]]
+      # x, 1
+      terms = [[exponentials.exponential(root[0], 1)], [exponentials.exponential(root[0], 0)]]
+      # 1*x^1 -4*x^0
+      return polynomial(coeffs=coeffs, terms=terms)
          
-   def combine_variable_powers_from_index(self, const_index):
-      moving_index = const_index+1
-      length = len(self.coeffs)
-      while moving_index < length:
-         # same variable powers
-         if product.summable_var_pow(self.terms[const_index], self.terms[moving_index]):
-            print("same", self.terms[const_index].latex(), self.terms[moving_index].latex())
-            # merge
-            self.coeffs[const_index]+=self.coeffs[moving_index]
-            # delete
-            del self.terms[moving_index]
-            del self.coeffs[moving_index]
-            # reduce length to avoid index out of range
-            length -= 1
-         else:
-            print("different", const_index, moving_index)
-            moving_index += 1
-      return length
-         
-         
+x = variables.variable("x")
+roots = [(x, 4), (x, -3), (x, 5)]
+p = polynomial.from_roots(roots)
