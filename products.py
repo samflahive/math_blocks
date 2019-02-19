@@ -11,7 +11,7 @@ class product:
     # 6) latex
 
     def __init__(self, *args):
-        self.terms = args if isinstance(args, (list)) else list(args)
+        self.terms = list(args)
 
     def __mul__(self, other):
         return product(*self.terms, *other.terms)

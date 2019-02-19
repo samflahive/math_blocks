@@ -1,5 +1,5 @@
 import variables
-from products import product
+from poly_terms import poly_term
 import exponentials
 
 class polynomial:
@@ -16,7 +16,7 @@ class polynomial:
       # coeffs is a list of number and math-block objects
       self.coeffs = coeffs
       # each argument of polynomial is a list or a product
-      self.terms = list(map(lambda x : product(*x) if isinstance(x, list) else x, terms))
+      self.terms = list(map(lambda x : poly_term(*x), terms))
       self.roots_known = False
 
 
@@ -94,7 +94,3 @@ class polynomial:
       terms = [[exponentials.exponential(root[0], 1)], [exponentials.exponential(root[0], 0)]]
       # 1*x^1 -4*x^0
       return polynomial(coeffs=coeffs, terms=terms)
-         
-x = variables.variable("x")
-roots = [(x, 4), (x, -3), (x, 5)]
-p = polynomial.from_roots(roots)
