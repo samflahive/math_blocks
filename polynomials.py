@@ -1,6 +1,7 @@
 import variables
 from poly_terms import poly_term
 import exponentials
+import number_formatting
 
 class polynomial:
    # functionality
@@ -71,6 +72,16 @@ class polynomial:
          # 1)
          term.reduce()
 
+   def latex(self):
+      # return a string containing a latex expression of this polynomial
+
+      latex = ""
+      # loop through coeffs/values
+      for index in range(len(self.coeffs)):
+         term_latex = "{}{}".format(number_formatting.number_coeff(self.coeffs[index], index), self.terms[index].latex())
+         latex += term_latex
+      return latex
+   
    def from_roots(roots):
       # create a polynomial that represents a factor for the first root
       poly = polynomial.root_to_factor(roots[0])
