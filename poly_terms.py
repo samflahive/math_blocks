@@ -47,3 +47,7 @@ class poly_term(products.product):
             else:
                 moving_index += 1
         return terms_length
+
+    def latex(self, explicit=False):
+        return "".join(map(lambda x: x.latex(explicit), self.terms))
+        

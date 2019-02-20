@@ -41,11 +41,19 @@ class exponential:
          new_power = exp.power*math.log(exp.base, new_base)
          return exponential(exp.base, new_power)
 
-     def latex(self):
+     def latex(self, explicit=False):
           # extract the value of the base whether its a number or variable
           base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.latex()
           power_symbol = self.power if isinstance(self.power, (int, float, complex)) else self.power.latex()
-          return "{}^{}".format(base_symbol, power_symbol)
+          if explicit:
+               return "{}^{}".format(base_symbol, power_symbol)
+          else:
+               if self.power == 0:
+                    return ""
+               elif self.power == 1:
+                    return "{}".format(base_symbol)
+               else:
+                    return "{}^{}".format(base_symbol, power_symbol)
 
 
                
