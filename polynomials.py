@@ -1,3 +1,4 @@
+import copy
 import variables
 from poly_terms import poly_term
 import exponentials
@@ -17,7 +18,7 @@ class polynomial:
       # coeffs is a list of number and math-block objects
       self.coeffs = coeffs
       # each argument of polynomial is a list or a product
-      self.terms = list(map(lambda x : poly_term(*x), terms))
+      self.terms = list(map(lambda x : poly_term(*x) if isinstance(x, (list)) else x, terms))
       self.roots_known = False
 
 
@@ -27,6 +28,11 @@ class polynomial:
       return polynomial(coeffs=coeffs, terms=terms)
 
    def __mul__(self, other):
+      # poly * number
+      if isinstance(other, (int, float, complex)):
+         return polynomial.scale(self, other)
+         
+      # poly * poly
       # combine the roots
       if self.roots_known and other.roots_known:
          roots = self.roots + other.roots
@@ -105,3 +111,19 @@ class polynomial:
       terms = [[exponentials.exponential(root[0], 1)], [exponentials.exponential(root[0], 0)]]
       # 1*x^1 -4*x^0
       return polynomial(coeffs=coeffs, terms=terms)
+
+   def scale(poly, number):
+      coeffs = list(map(lambda x: x*number, poly.coeffs))
+      # clone the terms
+      terms = copy.deepcopy(poly.terms)
+      return polynomial(coeffs=coeffs, terms=terms)
+
+x = variables.variable("x")
+y = variables.variable("y")
+
+term1 = [exponentials.exponential(x, 4),exponentials.exponential(y, 4)]
+term2 = [exponentials.exponential(y, 3),exponentials.exponential(x, 4)]
+term3 = [exponentials.exponential(x, 1),exponentials.exponential(y, 2)]
+term4 = [exponentials.exponential(x, 2),exponentials.exponential(y, 1)]
+
+poly_test = polynomial([1,2,3,4], [term1, term2, term3, term4])
