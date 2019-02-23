@@ -1,5 +1,6 @@
 import polynomials
 import exponentials
+import variables
 
 class cubic(polynomials.polynomial):
     def __init__(self, coeffs, variable):
@@ -19,8 +20,8 @@ class cubic(polynomials.polynomial):
         # roots = [a,b]
         if len(roots) != 3:
             ValueError("The cubic.from_roots requires the parameter roots is a list of length 3 - not {}".format(len(roots)))
-         if not isinstance(var, (variables.variable)):
+        if not isinstance(var, (variables.variable)):
             TypeError("The var parameter of the cubic.from_roots method must be a math_blocks variable object")
         # roots = [a,b]
-        coeffs = [1, -2*(roots[0]*roots[1]+roots[2]), 2*roots[0]*roots[1]*(1-roots[2]), -(roots[0]*roots[1]*roots[2])]
+        coeffs = [1, -(roots[0]+roots[1]+roots[2]), (roots[0]*roots[1]+roots[0]*roots[2]+roots[1]*roots[2]), -(roots[0]*roots[1]*roots[2])]
         return cubic(coeffs=coeffs, variable=var)
