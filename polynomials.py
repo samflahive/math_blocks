@@ -3,6 +3,7 @@ import variables
 from poly_terms import poly_term
 import exponentials
 import number_formatting
+from helpers import list_match
 
 class polynomial:
    # functionality
@@ -57,9 +58,36 @@ class polynomial:
                result_term.arrange()
                new_coeffs.append(result_coeff)
                new_terms.append(result_term)
+         
          return polynomial(coeffs=new_coeffs, terms=new_terms)
                
+   def __eq__(self, other):
+      # assume that both polynomials have already been reduced
+
+      index_conversion = []
+      try:
+         # loop through coeffs of self
+         for coeff in self.coeffs:
+            # try find it in other.coeffs
+            try:
+               index = other.coeffs.index(coeff)
+            except ValueError as valEr:
+               # the coeff could not be found in other.coeffs - not a match
+               return False
+            index_conversion.append(index)
+      except AttributeError as AtEr:
+         # likely other does not have .coeffs --> not polynomial
+         return False
+      find_index = 0
+      # loop through terms of self
+      for term in self.terms:
+         if term != other.terms[index_conversion[find_index]]:
+            return False
+         find_index += 1
+      return True
          
+      
+      
 
    def evaluate(self):
       summing = 0
@@ -118,6 +146,9 @@ class polynomial:
       terms = copy.deepcopy(poly.terms)
       return polynomial(coeffs=coeffs, terms=terms)
 
+
+
+
 x = variables.variable("x")
 y = variables.variable("y")
 
@@ -127,3 +158,10 @@ term3 = [exponentials.exponential(x, 1),exponentials.exponential(y, 2)]
 term4 = [exponentials.exponential(x, 2),exponentials.exponential(y, 1)]
 
 poly_test = polynomial([1,2,3,4], [term1, term2, term3, term4])
+
+
+x2 = exponentials.exponential(x,2)
+x1 = exponentials.exponential(x,1)
+x0 = exponentials.exponential(x,0)
+q1 = polynomial([4,5,2], [[x2], [x1],[x0]])
+q2 = polynomial([2,4,5], [[x0], [x2],[x1]])
