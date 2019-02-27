@@ -50,6 +50,48 @@ class test_exp(unittest.TestCase):
         exp.power = y
         # variable ^ variable
         self.assertEqual(exp.latex(), "x^y")
+
+    def test_mult(self):
+        # test the multiplication operator
+
+        expA = exponentials.exponential(2,3)
+        expB = exponentials.exponential(2,6)
+
+        # multiply two exp objects
+        expC = expA*expB
+
+        # test result via:
+        # 1) evaluation
+        self.assertEqual(expC.evaluate(), expA.evaluate()*expB.evaluate())
+        #2) latex format
+        self.assertEqual(expC.latex(), "2^9")
+
+        # test mult for differing bases via evaluate
+        expA.base = 3
+        expC = expA*expB
+        self.assertAlmostEqual(expC.evaluate(), expA.evaluate()*expB.evaluate())
+
+    def test_eq(self):
+        # test the == operator
+        
+        expA = exponentials.exponential(3,7)
+        expB = exponentials.exponential(3,6)
+        self.assertEqual(expA==expB, False)
+        
+        x = variables.variable("x")
+
+        expA.power = x
+        self.assertEqual(expA==expB, False)
+
+        expB.power = x
+        self.assertEqual(expA==expB, True)
+
+        y = variables.variable("y")
+
+        expB.power = y
+        self.assertEqual(expA==expB, False)
+        
+        
         
 
 
