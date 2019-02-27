@@ -17,11 +17,16 @@ class exponential:
          # multiply 2 exponential objects to return an exponential object
          # returning exponential object will have the same base as the LHS (self) exp
 
+         # if bases are the same - just add the bases
+         if self.base == other.base:
+              return exponential(self.base, self.power+other.power)
+          
          # create an exp object equivalent other but with the base of self
          same_base = exponential.change_base(other, self.base)
 
          # create the resulting exponential
          return exponential(self.base, self.power+same_base.power)
+          
      def __eq__(self, other):
           # equality operator ==
           if not isinstance(other, (exponential)):
@@ -38,8 +43,17 @@ class exponential:
      def change_base(exp, new_base):
          # return an exponential object with the base of new_base
          # that is mathematically equivalent to the exponential object exp
-         new_power = exp.power*math.log(exp.base, new_base)
-         return exponential(exp.base, new_power)
+
+         power_scaler = math.log(exp.base, new_base)
+         
+         # new power might be slightly off - even when exact value is calculatable
+         # eg 2.0000000002 should be 2
+
+         # log(exp.base, new_base) should return a clean int
+         if exp.base % new_base == 0 or new_base % exp.base == 0:
+              power_scaler = int(power_scaler)
+         new_power = exp.power*power_scaler
+         return exponential(new_base, new_power)
 
      def latex(self, explicit=False):
           # extract the value of the base whether its a number or variable
