@@ -14,12 +14,15 @@ class logarithm:
     def __add__(self, other):
         # add two logarithm objects
         # log_x(Y) + log_x(Z) = log_x(YZ)
-        return logarithm(self.base, self.exponent*other.exponent)
+        if self.base != other.base:
+            raise ValueError("Logarithm objects must have the same base to be summed.")
+        return logarithm(self.exponent*other.exponent, self.base)
 
     def __sub__(self, other):
         # subtract one logarithm object from another
         # log_x(Y) - log_x(Z) = log_x(Y/Z)
-        return logarithm(self.base, self.exponent/other.exponent)
+        new_expo = self.exponent/other.exponent if self.exponent%other.exponent != 0 else int(self.exponent/other.exponent)
+        return logarithm(new_expo, self.base)
 
     def __div__(self, other):
         # divide one log object by another
@@ -33,7 +36,7 @@ class logarithm:
             # log_b(Y)/log_x(Y) = log_b(X)
             return logarithm(other.base, self.base)
 
-    def __mul__(slef, other):
+    def __mul__(self, other):
         # multiply two logarithm objects
         # if the base of one is the exponent of the other eg. X
         # the result is the non X base and non X exponent
@@ -45,7 +48,14 @@ class logarithm:
         # extract the value of the base whether its a number or variable
         exponent_value = self.exponent if isinstance(self.exponent, (int, float, complex)) else self.exponent.evaluate()
         base_value = self.base if isinstance(self.base, (int, float, complex)) else self.base.evaluate()
-        return math.log(exponent_value, base_value)
+        value_out =  math.log(exponent_value, base_value)
+
+        # correct value out for machine artifacts
+        if exponent_value**round(value_out) == base_value:
+            return round(value_out)
+        
+        return value_out
+        
 
     def latex(self):
         # extract the value of the components whether they are numbers or variables
