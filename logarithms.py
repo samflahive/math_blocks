@@ -24,7 +24,7 @@ class logarithm:
         new_expo = self.exponent/other.exponent if self.exponent%other.exponent != 0 else int(self.exponent/other.exponent)
         return logarithm(new_expo, self.base)
 
-    def __div__(self, other):
+    def __truediv__(self, other):
         # divide one log object by another
         # 2 cases
         # 1) common base
@@ -40,9 +40,13 @@ class logarithm:
         # multiply two logarithm objects
         # if the base of one is the exponent of the other eg. X
         # the result is the non X base and non X exponent
-        exponent = self.exponent if self.exponent != other.base else other.exponent
-        base = self.base if self.base != other.exponent else other.base
-        return logarithm(exponent, base)
+
+        # required condition
+        if self.exponent == other.base:
+            return logarithm(other.exponent, self.base)
+        elif other.exponent == self.base:
+            return logarithm(self.exponent, other.base)
+        raise ValueError("The base of one log must be the exponent of the other, to multiply the two")
 
     def evaluate(self):
         # extract the value of the base whether its a number or variable
