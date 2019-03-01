@@ -91,6 +91,56 @@ class test_log(unittest.TestCase):
 
         self.assertAlmostEqual(logC.evaluate(), 0.5)
         self.assertEqual(logC.latex(), "log_x(10)")
+
+    def test_mul(self):
+        # test the * operator
+
+        # number, number
+        logA = logarithms.logarithm(10000,100) # 2
+        logB = logarithms.logarithm(100,10) # 2
+
+        logC = logA*logB # 4
+
+        self.assertAlmostEqual(logC.evaluate(), 4)
+
+        # number, variable
+
+        x = variables.variable("x")
+        x.value = 100
+        
+        logA.base = x
+        logB.exponent = x
+        
+        logC = logA*logB
+        
+        self.assertAlmostEqual(logC.evaluate(), 4)
+
+    def test_div(self):
+        # test the / operator
+
+        # common base
+        # number, number
+        logA = logarithms.logarithm(10000,10) # 4
+        logB = logarithms.logarithm(100,10) # 2
+
+        logC = logA/logB # 2
+
+        self.assertAlmostEqual(logC.evaluate(), 2)
+
+        # common exponent
+        # number, variable
+
+        x = variables.variable("x")
+        x.value = 1000
+        
+        logA.base = x
+        logA.exponent = x
+
+        logB.exponent = x
+        
+        logC = logA/logB
+        
+        self.assertAlmostEqual(logC.evaluate(), 1/3)
         
 
 
