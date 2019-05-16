@@ -1,6 +1,6 @@
 import products
 import exponentials
-
+import copy
 # this is a child of the product class
 # it is designed for use by the polynomial class
 # it is a product class which has terms that are exclusively exponential objects
@@ -50,4 +50,27 @@ class poly_term(products.product):
 
     def latex(self, explicit=False):
         return "".join(map(lambda x: x.latex(explicit), self.terms))
+
+    def derivative(self, var):
+        """
+        derivative of x^n*y^m*z^k with respect to x, y, or z
+        assume that each term appear once eg. x^3*x^2 does not occur, it has been reduced to x^5
+        return product object
+        """
         
+        for index,term in enumerate(self.terms):
+            # this is the term with the derivative variable
+            if term.base == var:
+                # reduces to nothing
+                if term.power == 0:
+                    return products.product(0)
+                else:
+                    # create a copy of the term
+                    der_term = copy.deepcopy(self)
+                    # replace the target term with its derivative
+                    der_term.terms.append(der_term.terms[index].power)
+                    der_term.terms[index].power -= 1
+                    return der_term
+                
+        # no matching variable found
+        return products.product(0)

@@ -106,14 +106,31 @@ class polynomial:
          # 1)
          term.reduce()
 
-   def latex(self):
+   def term_latex(self, index, explicit=False):
+      """
+      latex for a specifc term in a polynomial, eg. 4*x^2*y^3
+      explicit=True should show all coeffs, bases, and powers no matter their value
+      explicit=False should show the most natural way it would be written:
+         coefficient of 1 should not be shown, unless no variables follow, eg. +1 is ok, +1x^4 should just be +x^4
+         coefficient of 0 should mean the enitre term is ignored
+         
+      """
+      
+      if self.coeffs[index] == 0:
+         return ""
+
+      var_latex = self.terms[index].latex(explicit=explicit)
+      coeff_latex  = number_formatting.number_coeff(self.coeffs[index], index, explicit=(explicit or var_latex == ""))
+      
+      return "{}{}".format(coeff_latex, var_latex)
+
+   def latex(self, explicit=False):
       # return a string containing a latex expression of this polynomial
 
       latex = ""
       # loop through coeffs/values
       for index in range(len(self.coeffs)):
-         term_latex = "{}{}".format(number_formatting.number_coeff(self.coeffs[index], index), self.terms[index].latex())
-         latex += term_latex
+         latex += self.term_latex(index, explicit)
       return latex
    
    def from_roots(roots):
@@ -137,6 +154,7 @@ class polynomial:
       coeffs = [1, -root[1]]
       # x, 1
       terms = [[exponentials.exponential(root[0], 1)], [exponentials.exponential(root[0], 0)]]
+      
       # 1*x^1 -4*x^0
       return polynomial(coeffs=coeffs, terms=terms)
 
@@ -146,7 +164,26 @@ class polynomial:
       terms = copy.deepcopy(poly.terms)
       return polynomial(coeffs=coeffs, terms=terms)
 
-
+   def derivative(self, var):
+      """
+      derivative of polynomial with respect to a variable
+      return polynomial
+      """
+      der_coeffs = []
+      der_terms = []
+      # loop through the terms
+      for index,term in enumerate(self.terms):
+         deriv = term.derivative(var)
+         # move numbers in the term to their matching coefficient
+         scalar = deriv.terms[-1]
+         if scalar != 0:
+            # remove number from the term
+            del deriv.terms[-1]
+            # add derivative to new polynomial
+            der_coeffs.append(self.coeffs[index]*scalar)
+            der_terms.append(deriv)
+      return polynomial(der_coeffs, der_terms)
+         
 
 
 x = variables.variable("x")
