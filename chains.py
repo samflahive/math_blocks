@@ -1,4 +1,5 @@
 import number_formatting
+import copy
 
 class chain:
     # sums of math_block objects
@@ -18,7 +19,34 @@ class chain:
         """
         return sum(item.evaluate() for item in self.adders) - sum(item.evaluate() for item in self.subbers)
 
-    
+    def __add__(self, other):
+        """
+        addition operator for chain objects - supports all non-chain objects
+        return chain object
+        """
+        # clone chain
+        new_chain = copy.deepcopy(self)
+        # add object to adders
+        new_chain.adders.append(other)
+        # update order - this item will be shown last
+        new_chain.order[0].append(max(new_chain.order[0][-1], new_chain.order[1][-1])+1)
+
+        return new_chain
+
+    def __sub__(self, other):
+        """
+        subtraction operator for chain objects - supports all non-chain objects
+        return chain object
+        """
+        # clone chain
+        new_chain = copy.deepcopy(self)
+        # add object to subbers
+        new_chain.subbers.append(other)
+        # update order - this item will be shown last
+        new_chain.order[1].append(max(new_chain.order[0][-1], new_chain.order[1][-1])+1)
+
+        return new_chain
+        
 
     def latex(self, explicit=False):
         """
