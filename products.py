@@ -1,5 +1,5 @@
-import exponentials
-import variables
+import math_blocks.exponentials
+import math_blocks.variables
 
 class product:
     # functionality
@@ -36,10 +36,10 @@ class product:
             if isinstance(term, (int, float, complex)):
                 numbers.append(term)
             # exponential
-            elif isinstance(term, (exponentials.exponential)):
+            elif isinstance(term, (math_blocks.exponentials.exponential)):
                 exps.append(term)
             # variables
-            elif isinstance(term, (variables.variable)):
+            elif isinstance(term, (math_blocks.variables.variable)):
                 varis.append(term)
             # should not happen
             else:
@@ -57,7 +57,7 @@ class product:
             if isinstance(term, (int, float, complex)):
                 numbers.append(term)
             # exponential
-            elif isinstance(term, (exponentials.exponential)):
+            elif isinstance(term, (math_blocks.exponentials.exponential)):
                 exps.append(term)
             # other
             else:
@@ -66,7 +66,7 @@ class product:
         # reduce the numbers list to a single number
         number = product.merge_coeffs(numbers)
         # reduce the exponentials list a (hopefully) smaller list
-        exponentials.exponential.combine_by_base(exps)
+        math_blocks.exponentials.exponential.combine_by_base(exps)
         self.terms = [number]+exps+others
         
 
@@ -88,7 +88,7 @@ class product:
             # a coefficient
             if isinstance(term, (int, float, complex)):
                 continue
-            elif isinstance(term, (exponentials.exponential)):
+            elif isinstance(term, (math_blocks.exponentials.exponential)):
                 if term not in prodB.terms:
                     return False
                 else:

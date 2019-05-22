@@ -1,4 +1,4 @@
-import number_formatting
+import math_blocks.number_formatting
 
 class fraction:
     def __init__(self, num, den):
@@ -22,11 +22,11 @@ class fraction:
         return the latex format of this fraction
         """
         if isinstance(self.numerator, (int, float, complex)):
-            num_latex = number_formatting.number_coeff(self.numerator , 0, explicit=explicit, one_special=True)
+            num_latex = math_blocks.number_formatting.number_coeff(self.numerator , 0, explicit=explicit, one_special=True)
         else:
             num_latex = self.numerator.latex(explicit=explicit)
         if isinstance(self.denominator, (int, float, complex)):
-            den_latex = number_formatting.number_coeff(self.denominator , 0, explicit=explicit, one_special=True)
+            den_latex = math_blocks.number_formatting.number_coeff(self.denominator , 0, explicit=explicit, one_special=True)
         else:
             den_latex = self.denominator.latex(explicit=explicit)
 

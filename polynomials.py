@@ -1,9 +1,7 @@
 import copy
-import variables
-from poly_terms import poly_term
-import exponentials
-import number_formatting
-from helpers import list_match
+from math_blocks.poly_terms import poly_term as poly_term
+import math_blocks.exponentials
+import math_blocks.number_formatting
 
 class polynomial:
    # functionality
@@ -120,7 +118,7 @@ class polynomial:
          return ""
 
       var_latex = self.terms[index].latex(explicit=explicit)
-      coeff_latex  = number_formatting.number_coeff(self.coeffs[index], index, explicit=(explicit or var_latex == ""))
+      coeff_latex  = math_blocks.number_formatting.number_coeff(self.coeffs[index], index, explicit=(explicit or var_latex == ""))
       
       return "{}{}".format(coeff_latex, var_latex)
 
@@ -153,7 +151,7 @@ class polynomial:
       # 1, -4
       coeffs = [1, -root[1]]
       # x, 1
-      terms = [[exponentials.exponential(root[0], 1)], [exponentials.exponential(root[0], 0)]]
+      terms = [[math_blocks.exponentials.exponential(root[0], 1)], [math_blocks.exponentials.exponential(root[0], 0)]]
       
       # 1*x^1 -4*x^0
       return polynomial(coeffs=coeffs, terms=terms)
@@ -183,22 +181,3 @@ class polynomial:
             der_coeffs.append(self.coeffs[index]*scalar)
             der_terms.append(deriv)
       return polynomial(der_coeffs, der_terms)
-         
-
-
-x = variables.variable("x")
-y = variables.variable("y")
-
-term1 = [exponentials.exponential(x, 4),exponentials.exponential(y, 4)]
-term2 = [exponentials.exponential(y, 3),exponentials.exponential(x, 4)]
-term3 = [exponentials.exponential(x, 1),exponentials.exponential(y, 2)]
-term4 = [exponentials.exponential(x, 2),exponentials.exponential(y, 1)]
-
-poly_test = polynomial([1,2,3,4], [term1, term2, term3, term4])
-
-
-x2 = exponentials.exponential(x,2)
-x1 = exponentials.exponential(x,1)
-x0 = exponentials.exponential(x,0)
-q1 = polynomial([4,5,2], [[x2], [x1],[x0]])
-q2 = polynomial([2,4,5], [[x0], [x2],[x1]])

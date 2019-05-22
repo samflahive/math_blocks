@@ -1,4 +1,4 @@
-import number_formatting
+import math_blocks.number_formatting
 import copy
 
 class chain:
@@ -73,7 +73,7 @@ class chain:
             if adder_index < subber_index:
                 adder = self.adders[adder_order_index]
                 if isinstance(adder, (int, float, complex)):
-                    latex += number_formatting.number_coeff(adder, adder_order_index, explicit=explicit, one_special=False)
+                    latex += math_blocks.number_formatting.number_coeff(adder, adder_order_index, explicit=explicit, one_special=False)
                 else:
                     latex += "{}{}".format("+" if adder_order_index != 0 else "",adder.latex(explicit=explicit))
 
@@ -83,7 +83,7 @@ class chain:
             else:
                 subber = self.subbers[subber_order_index]
                 if isinstance(adder, (int, float, complex)):
-                    latex += number_formatting.number_coeff(-subber, subber_order_index, explicit=explicit, one_special=False)
+                    latex += math_blocks.number_formatting.number_coeff(-subber, subber_order_index, explicit=explicit, one_special=False)
                 else:
                     latex += "{}{}".format("-" if subber_order_index != 0 else "",subber.latex(explicit=explicit))
 

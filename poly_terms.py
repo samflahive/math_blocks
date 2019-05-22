@@ -1,5 +1,5 @@
-import products
-import exponentials
+import math_blocks.products as products
+import math_blocks.exponentials as exponentials
 import copy
 # this is a child of the product class
 # it is designed for use by the polynomial class

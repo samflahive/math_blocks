@@ -1,6 +1,6 @@
-import polynomials
-import exponentials
-import variables
+import math_blocks.polynomials as polynomials
+import math_blocks.exponentials as exponentials
+import math_blocks.variables as variables
 
 class cubic(polynomials.polynomial):
     def __init__(self, coeffs, variable):
