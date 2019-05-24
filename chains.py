@@ -71,19 +71,19 @@ class chain:
             if adder_index < subber_index:
                 adder = self.adders[adder_order_index]
                 if isinstance(adder, (int, float, complex)):
-                    latex += number_coeff(adder, adder_order_index, explicit=explicit, one_special=False)
+                    latex += number_coeff(adder, adder_index, explicit=explicit, one_special=False)
                 else:
-                    latex += "{}{}".format("+" if adder_order_index != 0 else "",adder.latex(explicit=explicit))
+                    latex += "{}{}".format("+" if adder_index != 0 else "",adder.latex(explicit=explicit))
 
                 adder_order_index += 1
 
             # the current subber is before the current adder
             else:
                 subber = self.subbers[subber_order_index]
-                if isinstance(adder, (int, float, complex)):
-                    latex += number_coeff(-subber, subber_order_index, explicit=explicit, one_special=False)
+                if isinstance(subber, (int, float, complex)):
+                    latex += number_coeff(-subber, subber_index, explicit=explicit, one_special=False)
                 else:
-                    latex += "{}{}".format("-" if subber_order_index != 0 else "",subber.latex(explicit=explicit))
+                    latex += "-{}".format(subber.latex(explicit=explicit))
 
                 subber_order_index += 1
 
