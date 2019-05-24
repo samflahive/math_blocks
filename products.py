@@ -15,13 +15,16 @@ class product:
 
     def __mul__(self, other):
         return product(*self.terms, *other.terms)
-
+    
+    def scale(self, scalar):
+        return product(scalar, *self.terms)
+            
     def evaluate(self):
         total = 1
         for term in self.terms:
             total *= term if isinstance(term, (int, float, complex)) else term.evaluate()
         return total
-
+    
     def arrange(self):
         # 1) numbers
         # 2) exponents
@@ -70,8 +73,8 @@ class product:
         self.terms = [number]+exps+others
         
 
-    def latex(self):
-        return "\\cdot".join(map(lambda term: str(term) if isinstance(term, (int, float, complex)) else term.latex(), self.terms))
+    def latex(self, explicit=False):
+        return "\\cdot".join(map(lambda term: str(term) if isinstance(term, (int, float, complex)) else term.latex(explicit=explicit), self.terms))
 
     def merge_coeffs(coeffs):
         total = 1
