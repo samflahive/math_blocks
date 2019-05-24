@@ -1,4 +1,7 @@
 from .number_formatting import number_coeff
+from .polynomials import polynomial
+from .chains import chain
+import copy
 
 class fraction:
     def __init__(self, num, den):
@@ -31,3 +34,36 @@ class fraction:
             den_latex = self.denominator.latex(explicit=explicit)
 
         return r"\frac{{{0}}}{{{1}}}".format(num_latex, den_latex)
+
+    def split_numerator(self):
+        """
+        break down the fractions into a sum of fractions with the same denominator
+        return chain
+        """
+
+        new_num = copy.deepcopy(self.numerator)
+        new_den = copy.deepcopy(self.denominator)
+        # two types of numerator are supported - polynomials and chains
+        if isinstance(new_num, chain):
+            new_adders = [fraction(a,new_den) for a in new_num.adders]
+            new_subbers = [fraction(s,new_den) for s in new_num.subbers]
+            return chain(adders=new_adders, subber=new_subbers, order=new_num.order)
+        elif isinstance(new_num, polynomial):
+            order = [[],[]]
+            adders = []
+            subbers = []
+            for i,term in enumerate(new_num.terms):
+                data = fraction(term.scale(abs(new_num.coeffs[i])), new_den)
+                # adder
+                if new_num.coeffs[i] >= 0:
+                    adders.append(data)
+                    order[0].append(i)
+                # subber
+                else:
+                    subbers.append(data)
+                    order[1].append(i)
+            return chain(adders=adders, subbers=subbers, order=order)
+        else:
+            # cannot be split
+            return fraction(new_num, new_den)
+            
