@@ -1,26 +1,26 @@
-import math_blocks.polynomials as polynomials
-import math_blocks.exponentials as exponentials
-import math_blocks.variables as variables
+from .polynomials import polynomial
+from .exponentials import exponential
+from .variables import variable
 
-class cubic(polynomials.polynomial):
-    def __init__(self, coeffs, variable):
+class cubic(polynomial):
+    def __init__(self, coeffs, var):
         if len(coeffs) != 4:
             ValueError("Cubic objects take a list of 3 coefficients")
-        if not isinstance(variable, (variables.variable)):
+        if not isinstance(var, variable):
             TypeError("The variable parameter of the cubic class must be a math_blocks variable object")
             
-        terms = [[exponentials.exponential(variable, 3)],
-                 [exponentials.exponential(variable, 2)],
-                 [exponentials.exponential(variable, 1)],
-                 [exponentials.exponential(variable, 0)]]
+        terms = [[exponential(var, 3)],
+                 [exponential(var, 2)],
+                 [exponential(var, 1)],
+                 [exponential(var, 0)]]
         
-        polynomials.polynomial.__init__(self, coeffs=coeffs, terms=terms)
+        polynomial.__init__(self, coeffs=coeffs, terms=terms)
 
     def from_roots(roots, var):
         # roots = [a,b]
         if len(roots) != 3:
             ValueError("The cubic.from_roots requires the parameter roots is a list of length 3 - not {}".format(len(roots)))
-        if not isinstance(var, (variables.variable)):
+        if not isinstance(var, variable):
             TypeError("The var parameter of the cubic.from_roots method must be a math_blocks variable object")
         # roots = [a,b]
         coeffs = [1, -(roots[0]+roots[1]+roots[2]), (roots[0]*roots[1]+roots[0]*roots[2]+roots[1]*roots[2]), -(roots[0]*roots[1]*roots[2])]

@@ -1,4 +1,4 @@
-import math_blocks.number_formatting
+from .number_formatting import number_coeff
 import copy
 
 class chain:
@@ -62,8 +62,6 @@ class chain:
             # might have to block some functionality if the adders are finished before the subbers or vice versa
             adder_finished = (adder_order_index >= len(self.order[0]))
             subber_finished = (subber_order_index >= len(self.order[1]))
-            print(adder_order_index, subber_order_index)
-            
             
             # the print order of the current adder and subber - if not finished
             adder_index = self.order[1][subber_order_index]+1 if adder_finished else self.order[0][adder_order_index]
@@ -73,7 +71,7 @@ class chain:
             if adder_index < subber_index:
                 adder = self.adders[adder_order_index]
                 if isinstance(adder, (int, float, complex)):
-                    latex += math_blocks.number_formatting.number_coeff(adder, adder_order_index, explicit=explicit, one_special=False)
+                    latex += number_coeff(adder, adder_order_index, explicit=explicit, one_special=False)
                 else:
                     latex += "{}{}".format("+" if adder_order_index != 0 else "",adder.latex(explicit=explicit))
 
@@ -83,7 +81,7 @@ class chain:
             else:
                 subber = self.subbers[subber_order_index]
                 if isinstance(adder, (int, float, complex)):
-                    latex += math_blocks.number_formatting.number_coeff(-subber, subber_order_index, explicit=explicit, one_special=False)
+                    latex += number_coeff(-subber, subber_order_index, explicit=explicit, one_special=False)
                 else:
                     latex += "{}{}".format("-" if subber_order_index != 0 else "",subber.latex(explicit=explicit))
 

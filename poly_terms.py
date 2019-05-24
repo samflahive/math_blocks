@@ -1,5 +1,5 @@
-import math_blocks.products as products
-import math_blocks.exponentials as exponentials
+from .products import product
+from .exponentials import exponential
 import copy
 # this is a child of the product class
 # it is designed for use by the polynomial class
@@ -7,15 +7,15 @@ import copy
 # if a polynomial were to respresent x^2y^3 + 4xy^2 - 8x
 # poly_term objects would be used to represent [x^2, y^3], [x^1, y^2], [x^1]
 
-class poly_term(products.product):
+class poly_term(product):
     def __init__(self, *args):
         # make sure that the arguments are entirely exponential objects
         for term in args:
-            if not isinstance(term, (exponentials.exponential)):
+            if not isinstance(term, exponential):
                 error = """The poly_term class only accepts as arguments, any number of exponential objects"""
                 raise ValueError(error)
         # valid input
-        products.product.__init__(self, *args)
+        product.__init__(self, *args)
 
     def reduce(self):
         # merge terms of the same base
@@ -63,7 +63,7 @@ class poly_term(products.product):
             if term.base == var:
                 # reduces to nothing
                 if term.power == 0:
-                    return products.product(0)
+                    return product(0)
                 else:
                     # create a copy of the term
                     der_term = copy.deepcopy(self)
@@ -73,4 +73,4 @@ class poly_term(products.product):
                     return der_term
                 
         # no matching variable found
-        return products.product(0)
+        return product(0)

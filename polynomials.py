@@ -1,7 +1,7 @@
 import copy
-from math_blocks.poly_terms import poly_term as poly_term
-import math_blocks.exponentials
-import math_blocks.number_formatting
+from .poly_terms import poly_term
+from .exponentials import exponential
+from .number_formatting import number_coeff
 
 class polynomial:
    # functionality
@@ -118,7 +118,7 @@ class polynomial:
          return ""
 
       var_latex = self.terms[index].latex(explicit=explicit)
-      coeff_latex  = math_blocks.number_formatting.number_coeff(self.coeffs[index], index, explicit=(explicit or var_latex == ""))
+      coeff_latex  = number_coeff(self.coeffs[index], index, explicit=(explicit or var_latex == ""))
       
       return "{}{}".format(coeff_latex, var_latex)
 
@@ -151,7 +151,7 @@ class polynomial:
       # 1, -4
       coeffs = [1, -root[1]]
       # x, 1
-      terms = [[math_blocks.exponentials.exponential(root[0], 1)], [math_blocks.exponentials.exponential(root[0], 0)]]
+      terms = [[exponential(root[0], 1)], [exponential(root[0], 0)]]
       
       # 1*x^1 -4*x^0
       return polynomial(coeffs=coeffs, terms=terms)
