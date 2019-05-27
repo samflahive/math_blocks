@@ -16,6 +16,7 @@ class cubic(polynomial):
         
         polynomial.__init__(self, coeffs=coeffs, terms=terms)
 
+    @staticmethod
     def from_roots(roots, var):
         # roots = [a,b]
         if len(roots) != 3:

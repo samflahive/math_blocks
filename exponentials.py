@@ -39,7 +39,7 @@ class exponential:
          power_value = self.power if isinstance(self.power, (int, float, complex)) else self.power.evaluate()
          return base_value**power_value
 
-
+     @staticmethod
      def change_base(exp, new_base):
          # return an exponential object with the base of new_base
          # that is mathematically equivalent to the exponential object exp

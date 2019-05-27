@@ -11,6 +11,7 @@ class quadratic(polynomial):
         terms = [[exponential(var, 2)], [exponential(var, 1)], [exponential(var, 0)]]
         polynomial.__init__(self, coeffs=coeffs, terms=terms)
 
+    @staticmethod
     def from_roots(roots, var):
         # roots = [a,b]
         if len(roots) != 2:

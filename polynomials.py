@@ -130,7 +130,8 @@ class polynomial:
       for index in range(len(self.coeffs)):
          latex += self.term_latex(index, explicit)
       return latex
-   
+
+   @staticmethod
    def from_roots(roots):
       # create a polynomial that represents a factor for the first root
       poly = polynomial.root_to_factor(roots[0])
@@ -143,6 +144,7 @@ class polynomial:
       #poly.reduce()
       return poly
 
+   @staticmethod
    def root_to_factor(root):
       # root is a tuple or list of a variable and value, eg (x, 4)
       # this means x at the value of 4 is a root of some polynomial
@@ -156,6 +158,7 @@ class polynomial:
       # 1*x^1 -4*x^0
       return polynomial(coeffs=coeffs, terms=terms)
 
+   @staticmethod
    def scale(poly, number):
       coeffs = list(map(lambda x: x*number, poly.coeffs))
       # clone the terms

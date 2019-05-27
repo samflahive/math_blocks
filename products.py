@@ -82,6 +82,7 @@ class product:
             total *= coeff
         return total
 
+    @staticmethod
     def summable_var_pow(prodA, prodB):
         # checks if two product objects are composed of the same variables ^ powers
         # eg. 4x^2y^3 and 9y^3x^2 should return true
