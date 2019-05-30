@@ -14,7 +14,7 @@ class product:
         self.terms = list(args)
 
     def __mul__(self, other):
-        return product(*self.terms, *other.terms)
+        return product(*(self.terms+other.terms))
     
     def scale(self, scalar):
         return product(scalar, *self.terms)
