@@ -14,13 +14,14 @@ class polynomial:
    # 6) latex polynomials in factors form
    # 7) create polynomial from roots
 
-   def __init__(self, coeffs, terms):
+   def __init__(self, coeffs, terms, print_style="coeffs"):
       # coeffs is a list of number and math-block objects
       self.coeffs = coeffs
       # each argument of polynomial is a list or a product
       self.terms = list(map(lambda x : poly_term(*x) if isinstance(x, (list)) else x, terms))
       self.roots_known = False
-      self.sign = (coeffs[0] >= 0)
+      self.sign = (coeffs[0] >= 0) if isinstance(coeffs[0], (int, float, complex)) else coeffs[0].sign
+      self.print_style = print_style
 
 
    def __add__(self, other):
@@ -135,18 +136,28 @@ class polynomial:
       var_latex = self.terms[index].latex(explicit=explicit)
       # bool to determine explicity
       exp_boo = (explicit or (var_latex == "" and index != 0))
-      coeff_latex  = number_coeff(self.coeffs[index], index, explicit=exp_boo)
+      if isinstance(self.coeffs[index], (int, float, complex)):
+         coeff_latex  = number_coeff(self.coeffs[index], index, explicit=exp_boo)
+      else:
+         coeff_latex = "{0}{1}".format("+" if index != 0 else "", self.coeffs[index].latex())
       
       return "{}{}".format(coeff_latex, var_latex)
 
    def latex(self, explicit=False):
       # return a string containing a latex expression of this polynomial
 
-      latex = ""
-      # loop through coeffs/values
-      for index in range(len(self.coeffs)):
-         latex += self.term_latex(index, explicit)
-      return latex
+      if self.print_style == "coeffs":
+         latex = ""
+         # loop through coeffs/values
+         for index in range(len(self.coeffs)):
+            latex += self.term_latex(index, explicit)
+         return latex
+      else:
+         return self.factor_latex()
+
+   def factor_latex(self):
+      return "({})".format(")(".join([polynomial.root_to_factor(root).latex() for root in self.roots]))
+
 
    @staticmethod
    def from_roots(roots):
