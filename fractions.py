@@ -9,6 +9,9 @@ class fraction:
         # den is the fraction denominator
         self.numerator = num
         self.denominator = den
+        num_sign = num > 0 if isinstance(num, (int, float, complex)) else num.sign
+        den_sign = den > 0 if isinstance(den, (int, float, complex)) else den.sign
+        self.sign = num_sign == den_sign
 
     def evaluate(self):
         """
@@ -46,22 +49,12 @@ class fraction:
         # two types of numerator are supported - polynomials and chains
         if isinstance(new_num, chain):
             new_adders = [fraction(a,new_den) for a in new_num.adders]
-            new_subbers = [fraction(s,new_den) for s in new_num.subbers]
-            return chain(adders=new_adders, subber=new_subbers, order=new_num.order)
+            return chain(adders=new_adders)
         elif isinstance(new_num, polynomial):
-            order = [[],[]]
             adders = []
-            subbers = []
             for i,term in enumerate(new_num.terms):
-                data = fraction(term.scale(abs(new_num.coeffs[i])), new_den)
-                # adder
-                if new_num.coeffs[i] >= 0:
-                    adders.append(data)
-                    order[0].append(i)
-                # subber
-                else:
-                    subbers.append(data)
-                    order[1].append(i)
+                data = fraction(polynomial(coeffs=[abs(new_num.coeffs[i])], terms=[term]), new_den)
+                adders.append(data)
             return chain(adders=adders, subbers=subbers, order=order)
         else:
             # cannot be split

@@ -20,6 +20,7 @@ class polynomial:
       # each argument of polynomial is a list or a product
       self.terms = list(map(lambda x : poly_term(*x) if isinstance(x, (list)) else x, terms))
       self.roots_known = False
+      self.sign = (coeffs[0] >= 0)
 
 
    def __add__(self, other):
@@ -99,12 +100,16 @@ class polynomial:
       """
       remove coeffs and terms corresponding to zero value coefficients
       """
-      for index,coeff in enumerate(self.coeffs):
+      index = 0
+      while index < len(self.coeffs):
          # remove this coeff and term
-         if coeff == 0:
+         if self.coeffs[index] == 0:
             del self.coeffs[index]
             del self.terms[index]
-
+         else:
+            index += 1
+      self.sign = (self.coeffs[0] >= 0)
+      
    def reduce(self):
       # 2 steps
       # 1) combine exponentials within a term that have the same base
@@ -128,7 +133,9 @@ class polynomial:
          return ""
 
       var_latex = self.terms[index].latex(explicit=explicit)
-      coeff_latex  = number_coeff(self.coeffs[index], index, explicit=(explicit or var_latex == ""))
+      # bool to determine explicity
+      exp_boo = (explicit or (var_latex == "" and index != 0))
+      coeff_latex  = number_coeff(self.coeffs[index], index, explicit=exp_boo)
       
       return "{}{}".format(coeff_latex, var_latex)
 
