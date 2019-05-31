@@ -4,6 +4,7 @@ from .exponentials import exponential
 from .number_formatting import number_coeff
 
 class polynomial:
+   
    # functionality
    # 1) create polynomial from coeffs
    # 2) add and multiply two polynomials
@@ -82,8 +83,7 @@ class polynomial:
          if term != other.terms[index_conversion[find_index]]:
             return False
          find_index += 1
-      return True
-         
+      return True         
       
       
 
@@ -96,14 +96,14 @@ class polynomial:
       return summing
 	  
    def remove_zeros(self):
-	  """
-	  remove coeffs and terms corresponding to zero value coefficients
-	  """
-	  for index,coeff in enumerate(self.coeffs):
-	    # remove this coeff and term
-		if coeff == 0:
-		  del self.coeffs[index]
-		  del self.terms[index]
+      """
+      remove coeffs and terms corresponding to zero value coefficients
+      """
+      for index,coeff in enumerate(self.coeffs):
+         # remove this coeff and term
+         if coeff == 0:
+            del self.coeffs[index]
+            del self.terms[index]
 
    def reduce(self):
       # 2 steps
