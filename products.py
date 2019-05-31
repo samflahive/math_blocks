@@ -1,5 +1,4 @@
 from .exponentials import exponential
-from .variables import variable
 
 class product:
     # functionality
@@ -28,10 +27,8 @@ class product:
     def arrange(self):
         # 1) numbers
         # 2) exponents
-        # 3) variables
         numbers = []
         exps = []
-        varis = []
         unwanted = []
 
         for term in self.terms:
@@ -41,13 +38,10 @@ class product:
             # exponential
             elif isinstance(term, exponential):
                 exps.append(term)
-            # variables
-            elif isinstance(term, variable):
-                varis.append(term)
             # should not happen
             else:
                 unwanted.append(term)
-        self.terms = numbers+exps+varis+unwanted
+        self.terms = numbers+exps+unwanted
 
     def reduce(self):
         # simplify the product
