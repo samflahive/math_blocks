@@ -14,7 +14,7 @@ class chain:
         evaluate this chains
         return number
         """
-        return sum(list(map(lambda x: x if isinstance(x,(int,float,complex)) else x.evaluate())))
+        return sum(list(map(lambda x: x if isinstance(x,(int,float,complex)) else x.evaluate(), self.adders)))
 
     def __add__(self, other):
         """
