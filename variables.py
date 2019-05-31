@@ -1,3 +1,5 @@
+from .products import product
+
 class variable:
     def __init__(self, symbol):
         self.symbol = symbol
@@ -8,10 +10,13 @@ class variable:
             return False
         return self.symbol == other.symbol
 
+    def __mul__(self, other):
+        return product(self, other)
+
     def set_value(self, value):
         self.value = value
 
-    def latex(self):
+    def latex(self, explicit=False):
         return self.symbol
     
     def evaluate(self):
