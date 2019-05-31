@@ -110,6 +110,16 @@ class polynomial:
          else:
             index += 1
       self.sign = (self.coeffs[0] >= 0)
+
+   def replace_coeffs_by_value(self):
+      """
+      replace all non number coefficients with the number of their current value
+      return polynomial
+      """
+      new_terms = copy.deepcopy(self.terms)
+      new_coeffs = list(map(lambda coeff: coeff if isinstance(coeff, (int,float,complex)) else coeff.evaluate(), self.coeffs))
+
+      return polynomial(coeffs=new_coeffs, terms=new_terms)
       
    def reduce(self):
       # 2 steps
@@ -139,7 +149,7 @@ class polynomial:
       if isinstance(self.coeffs[index], (int, float, complex)):
          coeff_latex  = number_coeff(self.coeffs[index], index, explicit=exp_boo)
       else:
-         coeff_latex = "{0}{1}".format("+" if index != 0 else "", self.coeffs[index].latex())
+         coeff_latex = "{0}({1})".format("+" if index != 0 else "", self.coeffs[index].latex())
       
       return "{}{}".format(coeff_latex, var_latex)
 
