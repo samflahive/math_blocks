@@ -19,5 +19,8 @@ class quadratic(polynomial):
         if not isinstance(var, variable):
             TypeError("The var parameter of the quadratic.from_roots method must be a math_blocks variable object")
         coeffs = [1, -(roots[0]+roots[1]), roots[0]*roots[1]]
-        return quadratic(coeffs=coeffs, var=var)
+        quad = quadratic(coeffs=coeffs, var=var)
+        quad.roots_known = True
+        quad.roots = [[var, root] for root in roots]
+        return quad
         

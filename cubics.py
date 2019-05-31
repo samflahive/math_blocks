@@ -25,4 +25,7 @@ class cubic(polynomial):
             TypeError("The var parameter of the cubic.from_roots method must be a math_blocks variable object")
         # roots = [a,b]
         coeffs = [1, -(roots[0]+roots[1]+roots[2]), (roots[0]*roots[1]+roots[0]*roots[2]+roots[1]*roots[2]), -(roots[0]*roots[1]*roots[2])]
-        return cubic(coeffs=coeffs, var=var)
+        cube = cubic(coeffs=coeffs, var=var)
+        cube.roots_known = True
+        cube.roots = [[var, root] for root in roots]
+        return cube
