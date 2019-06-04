@@ -24,3 +24,13 @@ class quadratic(polynomial):
         quad.roots = [[var, root] for root in roots]
         return quad
         
+    @staticmethod
+    def from_square(a,h,c,var):
+        """
+        construct a polynomial from the form a(var+h)^2 + c
+        return polynomial
+        """
+
+        quad = quadratic(coeffs=[a, a*h*2, h*h+c], var=var)
+        quad.ahc = [a,h,c]
+        return quad
