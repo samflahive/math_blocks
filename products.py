@@ -1,4 +1,5 @@
 from .exponentials import exponential
+from .chains import chain
 
 class product:
     # functionality
@@ -11,9 +12,16 @@ class product:
 
     def __init__(self, *args):
         self.terms = list(args)
+        self.sign = True
 
     def __mul__(self, other):
-        return product(*(self.terms+other.terms))
+        if isinstance(other, product):
+            return product(*(self.terms+other.terms))
+        else:
+            return product(*self.terms+[other])
+
+    def __add__(self, other):
+        return chain(adders=[self, other])
     
     def scale(self, scalar):
         return product(scalar, *self.terms)

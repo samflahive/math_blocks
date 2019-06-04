@@ -55,7 +55,7 @@ class fraction:
             for i,term in enumerate(new_num.terms):
                 data = fraction(polynomial(coeffs=[abs(new_num.coeffs[i])], terms=[term]), new_den)
                 adders.append(data)
-            return chain(adders=adders, subbers=subbers, order=order)
+            return chain(adders=adders)
         else:
             # cannot be split
             return fraction(new_num, new_den)
