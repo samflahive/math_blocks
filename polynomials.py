@@ -126,9 +126,20 @@ class polynomial:
       # 1) combine exponentials within a term that have the same base
       # 2) combine terms that have use the same variables (and no others)
 
-      for term in self.terms:
-         # 1)
-         term.reduce()
+      index = 0
+      while index < len(self.coeffs)-1:
+         sub_index = index+1
+         while sub_index < len(self.coeffs):
+            current_term = self.terms[index].terms[0]
+            target_term = self.terms[sub_index].terms[0]
+            if current_term.base == target_term.base and current_term.power == target_term.power:
+               self.coeffs[index] += self.coeffs[sub_index]
+               del self.coeffs[sub_index]
+               del self.terms[sub_index]
+            else:
+               sub_index += 1
+         index += 1
+               
 
    def term_latex(self, index, explicit=False):
       """
