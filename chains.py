@@ -1,5 +1,4 @@
 from .number_formatting import number_coeff
-from .polynomials import polynomial
 import copy
 
 class chain:
