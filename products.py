@@ -76,7 +76,7 @@ class product:
         
 
     def latex(self, explicit=False):
-        return "\\cdot".join(map(lambda term: str(term) if isinstance(term, (int, float, complex)) else term.latex(explicit=explicit), self.terms))
+        return " \\cdot ".join(map(lambda term: str(term) if isinstance(term, (int, float, complex)) else term.latex(explicit=explicit), self.terms))
 
     def merge_coeffs(coeffs):
         total = 1
