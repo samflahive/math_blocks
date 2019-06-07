@@ -65,7 +65,7 @@ class logarithm:
         # extract the value of the components whether they are numbers or variables
         exponent_symbol = self.exponent if isinstance(self.exponent, (int, float, complex)) else self.exponent.latex()
         base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.latex()
-        return "log_{}({})".format(base_symbol, exponent_symbol)
+        return "log_{{{}}}({})".format(base_symbol, exponent_symbol)
 
         
         

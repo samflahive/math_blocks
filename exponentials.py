@@ -1,4 +1,5 @@
 import math
+import copy
 
 class exponential:
      # list of functionality
@@ -10,10 +11,18 @@ class exponential:
      
 
      def __init__(self, base, power):
+         print_conditions = "open" 
+         if isinstance(base, exponential):
+              exp = copy.deepcopy(base)
+              print_conditions = exp.print_conditions
+              base = exp.base
+              power = exp.power*power
          self.base = base
          self.power = power
+         self.print_conditions = print_conditions
 
      def __mul__(self, other):
+          
          # multiply 2 exponential objects to return an exponential object
          # returning exponential object will have the same base as the LHS (self) exp
 
@@ -60,14 +69,18 @@ class exponential:
           base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.latex()
           power_symbol = self.power if isinstance(self.power, (int, float, complex)) else self.power.latex()
           if explicit:
-               return "{}^{}".format(base_symbol, power_symbol)
+               out = "{}^{{{}}}".format(base_symbol, power_symbol)
           else:
                if self.power == 0:
-                    return ""
+                    out = ""
                elif self.power == 1:
-                    return "{}".format(base_symbol)
+                    out = "{}".format(base_symbol)
                else:
-                    return "{}^{}".format(base_symbol, power_symbol)
+                    out = "{}^{{{}}}".format(base_symbol, power_symbol)
+          if self.print_conditions == "open":
+               return out
+          else:
+               return "({})".format(out)
 
 
                
