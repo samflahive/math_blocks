@@ -1,73 +1,65 @@
+from .math_block import math_block
+from .chains import chain
+from .products import product
 import math
 import copy
+from .number_formatting import object_sign
 
-class exponential:
-     # list of functionality
+class exponential(math_block):
      
-     # 1) multiply exp objects
-     # 2) convert bases
-     # 3) evaluate
-     # 4) print latex
-     
-
      def __init__(self, base, power):
-         print_conditions = "open" 
-         if isinstance(base, exponential):
-              exp = copy.deepcopy(base)
-              print_conditions = exp.print_conditions
-              base = exp.base
-              power = exp.power*power
+         print_conditions = "open"
          self.base = base
          self.power = power
          self.print_conditions = print_conditions
-
+         self.sign = True
+         math_block.__init__(self, self.sign)
+         
      def __mul__(self, other):
-          
-         # multiply 2 exponential objects to return an exponential object
-         # returning exponential object will have the same base as the LHS (self) exp
+          if isinstance(other, exponential):
+               if self.base == other.base:
+                    return exponential(self.base, self.power+other.power)
 
-         # if bases are the same - just add the bases
-         if self.base == other.base:
-              return exponential(self.base, self.power+other.power)
-          
-         # create an exp object equivalent other but with the base of self
-         same_base = exponential.change_base(other, self.base)
+               same_base = exponential.change_base(other, self.base)
+               return exponential(self.base, self.power+same_base.power)
+               
+          elif isinstance(other, (int, float)):
+               return product([self, other])
+          else:
+               return NotImplemented
+     
 
-         # create the resulting exponential
-         return exponential(self.base, self.power+same_base.power)
+     def __add__(self, other):
+          return chain([self, other])
           
      def __eq__(self, other):
-          # equality operator ==
-          if not isinstance(other, (exponential)):
-               return False
-          return self.base == other.base and self.power == other.power
+          return isinstance(other, (exponential)) and self.base == other.base and self.power == other.power
      
      def evaluate(self):
          # extract the value of the base whether its a number or variable
          base_value = self.base if isinstance(self.base, (int, float, complex)) else self.base.evaluate()
          power_value = self.power if isinstance(self.power, (int, float, complex)) else self.power.evaluate()
-         return base_value**power_value
+         val = base_value**power_value
+         return val if self.sign else -val
 
      @staticmethod
      def change_base(exp, new_base):
-         # return an exponential object with the base of new_base
-         # that is mathematically equivalent to the exponential object exp
 
          power_scaler = math.log(exp.base, new_base)
          
-         # new power might be slightly off - even when exact value is calculatable
-         # eg 2.0000000002 should be 2
-
-         # log(exp.base, new_base) should return a clean int
          if exp.base % new_base == 0 or new_base % exp.base == 0:
               power_scaler = int(power_scaler)
          new_power = exp.power*power_scaler
          return exponential(new_base, new_power)
 
-     def latex(self, explicit=False):
+     def latex(self, explicit=False, show_plus=False):
           # extract the value of the base whether its a number or variable
-          base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.latex()
-          power_symbol = self.power if isinstance(self.power, (int, float, complex)) else self.power.latex()
+          if isinstance(self.base, (int, float)):
+               base_symbol = self.base
+          else:
+               lat = self.base.latex()
+               base_symbol = "({})".format(lat) if self.base.bracketed else lat
+          power_symbol = self.power if isinstance(self.power, (int, float)) else self.power.latex()
           if explicit:
                out = "{}^{{{}}}".format(base_symbol, power_symbol)
           else:
@@ -77,6 +69,9 @@ class exponential:
                     out = "{}".format(base_symbol)
                else:
                     out = "{}^{{{}}}".format(base_symbol, power_symbol)
+
+          out = object_sign(show_plus=show_plus, sign=self.sign)+out
+          
           if self.print_conditions == "open":
                return out
           else:

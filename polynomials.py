@@ -1,41 +1,41 @@
+from .math_block import math_block
 import copy
 from .poly_terms import poly_term
 from .exponentials import exponential
-from .number_formatting import number_coeff
+from .complex_numbers import complex_number
+from .number_formatting import number_coeff, object_sign
 
-class polynomial:
+class polynomial(math_block):
    
-   # functionality
-   # 1) create polynomial from coeffs
-   # 2) add and multiply two polynomials
-   # 3) evaluate polynomials
-   # 4) simplify polynomials
-   # 5) latex polynomials in coeffs form
-   # 6) latex polynomials in factors form
-   # 7) create polynomial from roots
-
-   def __init__(self, coeffs, terms, print_style="coeffs"):
+   def __init__(self, coeffs, terms, terms_ready=False,
+                print_style="coeffs", print_status="parent"):
       # coeffs is a list of number and math-block objects
       self.coeffs = coeffs
       # each argument of polynomial is a list or a product
-      self.terms = list(map(lambda x : poly_term(*x) if isinstance(x, (list)) else x, terms))
+      if terms_ready:
+         self.terms = terms
+      else:
+         self.terms = list(map(lambda x : poly_term(x), terms))
       self.roots_known = False
-      self.sign = (coeffs[0] >= 0) if isinstance(coeffs[0], (int, float, complex)) else coeffs[0].sign
+      self.sign = True
       self.print_style = print_style
-
-
+      self.print_status = print_status
+      math_block.__init__(self, sign=self.sign)
+      
    def __add__(self, other):
+      if not isinstance(other, polynomial):
+         return NotImplemented
       coeffs = self.coeffs+other.coeffs
       terms = self.terms+other.terms
-      return polynomial(coeffs=coeffs, terms=terms)
+      return polynomial(coeffs=coeffs, terms=terms, terms_ready=True)
 
    def __mul__(self, other):
-      # poly * number
-      if isinstance(other, (int, float, complex)):
+      # poly * other
+      if not isinstance(other, polynomial):
          return polynomial.scale(self, other)
-         
+
+     
       # poly * poly
-      # combine the roots
       if self.roots_known and other.roots_known:
          roots = self.roots + other.roots
          return polynomial.from_roots(roots)
@@ -43,8 +43,7 @@ class polynomial:
       # dont know the roots - have to use the terms
       else:
          new_coeffs = []
-         new_terms = []
-         # multiply each left hand side (lhs) term by each right hand side term
+         new_terms = []# multiply each left hand side (lhs) term by each right hand side term
          for lhs_term_index in range(len(self.terms)):
             
             lhs_term = self.terms[lhs_term_index]
@@ -95,8 +94,8 @@ class polynomial:
          term_val = self.terms[index].evaluate()
          coeff_val = self.coeffs[index] if isinstance(self.coeffs[index], (int, float, complex)) else self.coeffs[index].evaluate()
          summing += (coeff_val*term_val)
-      return summing
-	  
+      return summing if self.sign else -summing
+
    def remove_zeros(self):
       """
       remove coeffs and terms corresponding to zero value coefficients
@@ -119,7 +118,7 @@ class polynomial:
       new_terms = copy.deepcopy(self.terms)
       new_coeffs = list(map(lambda coeff: coeff if isinstance(coeff, (int,float,complex)) else coeff.evaluate(), self.coeffs))
 
-      return polynomial(coeffs=new_coeffs, terms=new_terms)
+      return polynomial(coeffs=new_coeffs, terms=new_terms, terms_ready=True)
       
    def reduce(self):
       # 2 steps
@@ -157,14 +156,14 @@ class polynomial:
       var_latex = self.terms[index].latex(explicit=explicit)
       # bool to determine explicity
       exp_boo = (explicit or (var_latex == "" and index != 0))
-      if isinstance(self.coeffs[index], (int, float, complex)):
+      if isinstance(self.coeffs[index], (int, float)):
          coeff_latex  = number_coeff(self.coeffs[index], index, explicit=exp_boo)
       else:
          coeff_latex = "{0}({1})".format("+" if index != 0 else "", self.coeffs[index].latex())
       
       return "{}{}".format(coeff_latex, var_latex)
 
-   def latex(self, explicit=False):
+   def latex(self, explicit=False, show_plus=False):
       # return a string containing a latex expression of this polynomial
 
       if self.print_style == "coeffs":
@@ -172,12 +171,46 @@ class polynomial:
          # loop through coeffs/values
          for index in range(len(self.coeffs)):
             latex += self.term_latex(index, explicit)
-         return latex
       else:
-         return self.factor_latex()
+         latex = self.factor_latex()
 
+      if self.sign:
+         if show_plus:
+            if (isinstance(self.coeffs[0], (int, float)) and self.coeffs[0] > 0) or self.coeffs[0].sign:
+               return "+"+latex
+         return latex
+            
+
+      out = "({})".format(latex)
+      out = object_sign(show_plus=show_plus, sign=self.sign)+out
+      return out
+   
    def factor_latex(self):
-      return "({})".format(")(".join([polynomial.root_to_factor(root).latex() for root in self.roots]))
+      out = "({})".format(")(".join([polynomial.root_to_factor(root).latex() for root in self.roots]))
+      out = object_sign(show_plus=show_plus, sign=self.sign)+out
+      return out
+
+   def reduce(self, reduce_terms=False):
+      index_dic = {}
+      stop = len(self.coeffs)
+      index = 0
+      while index < stop:
+         if reduce_terms:
+            self.terms[index].reduce()
+         lat = self.terms[index].latex()
+         if lat in index_dic:
+            self.coeffs[index_dic[lat]] += self.coeffs[index]
+            del self.coeffs[index]
+            del self.terms[index]
+            stop -= 1
+         else:
+            index_dic[lat] = index
+            index += 1
+
+      
+      
+         
+         
 
 
    @staticmethod
@@ -208,11 +241,11 @@ class polynomial:
       return polynomial(coeffs=coeffs, terms=terms)
 
    @staticmethod
-   def scale(poly, number):
-      coeffs = list(map(lambda x: x*number, poly.coeffs))
+   def scale(poly, scalar):
+      coeffs = list(map(lambda x: x*scalar, poly.coeffs))
       # clone the terms
       terms = copy.deepcopy(poly.terms)
-      return polynomial(coeffs=coeffs, terms=terms)
+      return polynomial(coeffs=coeffs, terms=terms, terms_ready=True)
 
    def derivative(self, var):
       """

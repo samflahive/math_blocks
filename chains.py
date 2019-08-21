@@ -1,30 +1,32 @@
+from .math_block import math_block
 from .number_formatting import number_coeff
 import copy
 
-class chain:
+class chain(math_block):
     # sums of math_block objects
 
-    def __init__(self, adders):
+    def __init__(self, items, sign=True):
         # adders are objects to be added in the chain: list of math_blocks objects
-        self.adders = adders
+        math_block.__init__(self, sign=sign)
+        self.items = items
 
     def evaluate(self):
         """
         evaluate this chains
         return number
         """
-        return sum(list(map(lambda x: x if isinstance(x,(int,float,complex)) else x.evaluate(), self.adders)))
+        return sum(list(map(lambda x: x if isinstance(x,(int,float,complex)) else x.evaluate(), self.items)))
 
     def __add__(self, other):
         """
         addition operator for chain objects - supports all non-chain objects
         return chain object
         """
-        # clone chain
-        new_chain = copy.deepcopy(self)
-        # add object to adders
-        new_chain.adders.append(other)
-        return new_chain
+        return chain(items=[*self.items, other], sign=self.sign)
+
+    def __sub__(self, other):
+        other = -other
+        return self + other
 
         
 
@@ -32,12 +34,16 @@ class chain:
         """
         latex string representing the chain
         """
-        latex = ""
+        latex_list = []
         
-        for index,term in enumerate(self.adders):
-            sign = (term >= 0) if isinstance(term, (int, float, complex)) else term.sign
-            if sign:
-                latex += "{}{}".format("" if index == 0 else "+", str(term) if isinstance(term, (int, float, complex)) else term.latex(explicit=explicit))
+        for index,term in enumerate(self.items):
+            if isinstance(term, (int, float)):
+                latex = number_coeff(term, index=index)
+
             else:
-                latex += "{}".format(number_coeff(term, index=index, explicit=explicit) if isinstance(term, (int, float, complex)) else term.latex(explicit=explicit))
-        return latex
+                latex = term.latex(show_plus=(index != 0))
+
+            latex_list.append(latex)
+                
+            out = "".join(latex_list)
+        return out if self.sign else "-({})".format(out)

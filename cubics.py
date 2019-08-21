@@ -8,14 +8,11 @@ class cubic(polynomial):
             ValueError("Cubic objects take a list of 3 coefficients")
         if not isinstance(var, variable):
             TypeError("The variable parameter of the cubic class must be a math_blocks variable object")
-            
-        terms = [[exponential(var, 3)],
-                 [exponential(var, 2)],
-                 [exponential(var, 1)],
-                 [exponential(var, 0)]]
+
+        terms = [[exponential(var, i)] for i in range(3,-1,-1)]
         
         polynomial.__init__(self, coeffs=coeffs, terms=terms)
-
+        
     @staticmethod
     def from_roots(roots, var):
         # roots = [a,b]

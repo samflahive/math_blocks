@@ -18,3 +18,9 @@ def number_coeff(number, index, explicit=False, one_special=True):
                 return "+{}".format(number)
             else:
                 return "+"
+
+def object_sign(show_plus, sign):
+    if sign:
+        return "+" if show_plus else ""
+    else:
+        return "-"

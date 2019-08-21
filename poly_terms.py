@@ -8,15 +8,16 @@ import copy
 # poly_term objects would be used to represent [x^2, y^3], [x^1, y^2], [x^1]
 
 class poly_term(product):
-    def __init__(self, *args):
+    def __init__(self, terms):
         # make sure that the arguments are entirely exponential objects
-        for term in args:
+        for term in terms:
             if not isinstance(term, exponential):
                 error = """The poly_term class only accepts as arguments, any number of exponential objects"""
                 raise ValueError(error)
         # valid input
-        product.__init__(self, *args)
-
+        product.__init__(self, terms)
+        
+            
     def reduce(self):
         # merge terms of the same base
         # overriding the product method
