@@ -16,6 +16,11 @@ class poly_term(product):
                 raise ValueError(error)
         # valid input
         product.__init__(self, terms)
+
+    def __mul__(self, other):
+        if isinstance(other, poly_term):
+            return poly_term(self.terms+other.terms)
+        return NotImplemented
         
             
     def reduce(self):
