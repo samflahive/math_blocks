@@ -54,12 +54,10 @@ class polynomial(math_block):
                # calculate
                result_coeff = lhs_coeff*rhs_coeff
                result_term = lhs_term*rhs_term
-               # fix the order
-               result_term.arrange()
                new_coeffs.append(result_coeff)
                new_terms.append(result_term)
          
-         return polynomial(coeffs=new_coeffs, terms=new_terms)
+         return polynomial(coeffs=new_coeffs, terms=new_terms, terms_ready=True)
                
    def __eq__(self, other):
       # assume that both polynomials have already been reduced
@@ -119,25 +117,6 @@ class polynomial(math_block):
       new_coeffs = list(map(lambda coeff: coeff if isinstance(coeff, (int,float,complex)) else coeff.evaluate(), self.coeffs))
 
       return polynomial(coeffs=new_coeffs, terms=new_terms, terms_ready=True)
-      
-   def reduce(self):
-      # 2 steps
-      # 1) combine exponentials within a term that have the same base
-      # 2) combine terms that have use the same variables (and no others)
-
-      index = 0
-      while index < len(self.coeffs)-1:
-         sub_index = index+1
-         while sub_index < len(self.coeffs):
-            current_term = self.terms[index].terms[0]
-            target_term = self.terms[sub_index].terms[0]
-            if current_term.base == target_term.base and current_term.power == target_term.power:
-               self.coeffs[index] += self.coeffs[sub_index]
-               del self.coeffs[sub_index]
-               del self.terms[sub_index]
-            else:
-               sub_index += 1
-         index += 1
                
 
    def term_latex(self, index, explicit=False):
@@ -206,11 +185,6 @@ class polynomial(math_block):
          else:
             index_dic[lat] = index
             index += 1
-
-      
-      
-         
-         
 
 
    @staticmethod

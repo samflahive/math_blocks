@@ -44,8 +44,6 @@ class product(math_block):
         out = " \\cdot ".join(latex_terms)
         if show_plus or not self.sign:
             out = "{}({})".format(object_sign(show_plus=show_plus, sign=self.sign),out)
-        elif self.parent == "chain":
-            out = "({})".format(out)
         return out
     
     def merge_coeffs(coeffs):
