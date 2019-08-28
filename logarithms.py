@@ -23,7 +23,7 @@ class logarithm(math_block):
     def __add__(self, other):
         if not isinstance(other, logarithm) or self.base != other.base:
             return chain([self, other])
-       return logarithm(self.exponent*other.exponent, self.base)
+        return logarithm(self.exponent*other.exponent, self.base)
 
     def __sub__(self, other):
         if not isinstance(other, logarithm) or self.base != other.base:
