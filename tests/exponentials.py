@@ -31,9 +31,9 @@ class basic_exponential(unittest.TestCase):
         self.assertEqual(basic_exp_D.evaluate(), 2**5)
         self.assertEqual(basic_exp_D.latex(), "2^{5}")
 
-        # adding and dividing exponentials
+        # adding and subtracting exponentials
         exp_sum = basic_exp_A + basic_exp_B - basic_exp_C
-        self.assertEqual(exp_sum.latex(), "2^{-3} + 4^{8} - 2^{-1}")
+        self.assertEqual(exp_sum.latex(), "2^{-3}+4^{8}-2^{-1}")
         self.assertEqual(exp_sum.evaluate(), 2**-3 + 4**2 - 2**-1)
 
         # multiplying exponential and number

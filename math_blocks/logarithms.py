@@ -27,7 +27,7 @@ class logarithm(math_block):
 
     def __sub__(self, other):
         if not isinstance(other, logarithm) or self.base != other.base:
-            return chain(self, -other)
+            return chain([self, -other])
         new_expo = self.exponent/other.exponent if self.exponent%other.exponent != 0 else int(self.exponent/other.exponent)
         return logarithm(new_expo, self.base)
 
