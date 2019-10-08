@@ -66,10 +66,10 @@ class basic_logarithm(unittest.TestCase):
         self.assertEqual(sb.latex(), "5-{}".format(basic_log_a.latex()))
 
         dv = 11 / basic_log_a
-        self.assertEqual(dv.latex(), "\\frac{11}{{{0}}}".format(basic_log_a.latex()))
+        self.assertEqual(dv.latex(), "\\frac{{11}}{{{0}}}".format(basic_log_a.latex()))
 
         pr = 3 * basic_log_b
-        self.assertEqual(or.latex(), "3 \cdot {}".format(basic_log_b.latex()))
+        self.assertEqual(pr.latex(), "{} \cdot 3".format(basic_log_b.latex()))
 
         
 
