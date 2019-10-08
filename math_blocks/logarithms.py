@@ -8,11 +8,6 @@ import math
 from .number_formatting import object_sign
 
 class logarithm(math_block):
-    # list of functionality
-    # 1) add and subtract
-    # 2) division and multiplication
-    # 3) latex print
-    # 4) evaluate
     
     def __init__(self, exponent, base, sign=True):
         self.exponent = exponent
@@ -31,6 +26,9 @@ class logarithm(math_block):
         new_expo = self.exponent/other.exponent if self.exponent%other.exponent != 0 else int(self.exponent/other.exponent)
         return logarithm(new_expo, self.base)
 
+    def __rsub__(self, other):
+        return chain([other, -self])
+
     def __truediv__(self, other):
         if isinstance(other, logarithm) and (self.base == other.base or self.exponent == other.exponent):
             if self.base == other.base:
@@ -41,6 +39,9 @@ class logarithm(math_block):
                 return logarithm(other.base, self.base)
 
         return fraction(self, other)
+
+    def __rtruediv__(self, other):
+        return fraction(other, self)
         
         
         
