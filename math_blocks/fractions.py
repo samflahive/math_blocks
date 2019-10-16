@@ -15,9 +15,14 @@ class fraction(math_block):
         
 
     def __add__(self, other):
-        if isinstance(other, fraction):
-            return fraction(self.numerator+other.numerator, self.denominator+other.denominator)
-        return fraction(self.numerator+other, self.denominator)
+        if isinstance(other, fraction) and self.denominator == other.denominator:
+            return fraction(self.numerator+other.numerator, self.denominator)
+        return chain([self, other])
+
+    def __sub__(self, other):
+        if isinstance(other, fraction) and self.denominator == other.denominator:
+            return fraction(self.numerator-other.numerator, self.denominator)
+        return chain([self, -other])
     
     def __mul__(self, other):
         if isinstance(other, (int,float, complex_number)):
@@ -27,6 +32,9 @@ class fraction(math_block):
                            return fraction(self.numerator*other.numerator, self.denominator*other.denominator)
 
         return NotImplemented
+
+    def __truediv__(self, other):
+        return fraction(self.numerator, self.denominator*other)
     
     def evaluate(self):
         """
