@@ -1,5 +1,5 @@
 from .math_block import math_block
-from .number_formatting import number_coeff
+from .number_formatting import number_coeff, object_sign
 import copy
 
 class chain(math_block):
@@ -33,13 +33,14 @@ class chain(math_block):
         """
         return chain(items=[*self.items, (other, True)], sign=self.sign)
 
+
     def __sub__(self, other):
         other = -other
         return self + other
 
         
 
-    def latex(self, explicit=False):
+    def latex(self, explicit=False, show_plus=False):
         """
         latex string representing the chain
         """
@@ -50,6 +51,7 @@ class chain(math_block):
                     item_latex = item
                     
             else:
+<<<<<<< HEAD
                 item_latex = item.latex(explicit=explicit)
                 if not (index == 0 and not explicit and sign):
                     sign_sym = "+" if sign else "-"
@@ -60,3 +62,13 @@ class chain(math_block):
             latex_list.append(item_latex)
         out = "".join(latex_list)
         return out if self.sign else "-({})".format(out)
+=======
+                latex = term.latex(show_plus=(index != 0))
+
+            latex_list.append(latex)
+                
+            out = "".join(latex_list)
+        if show_plus or not self.sign:
+            return "{}({})".format(object_sign(show_plus,self.sign),out)
+        return out
+>>>>>>> 5961f465424fb6d8574ef03fadc31e702186ebda
