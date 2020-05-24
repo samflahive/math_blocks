@@ -2,7 +2,7 @@ from .math_block import math_block
 from .numbers import number
 
 class variable(math_block):
-    def __init__(self, symbol, sign=True, value=None):
+    def __init__(self, symbol, value=None, sign=True, ):
         math_block.__init__(self, sign=sign)
         self.symbol = symbol
         self.sign = sign
