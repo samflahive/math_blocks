@@ -1,5 +1,4 @@
 from .math_block import math_block
-from .number_formatting import number_coeff, object_sign
 import copy
 
 class chain(math_block):
@@ -47,11 +46,17 @@ class chain(math_block):
         latex_list = []
         
         for index, (item, sign) in enumerate(self.items):
+
+            sign_sym = "+" if sign else "-"
+
+            # number
             if isinstance(item, (int, float)):
-                    item_latex = item
+                if index == 0 and not explicit:
+                    item_latex = str(item)
+                else:
+                    item_latex = "+%d" % item
                     
             else:
-<<<<<<< HEAD
                 item_latex = item.latex(explicit=explicit)
                 if not (index == 0 and not explicit and sign):
                     sign_sym = "+" if sign else "-"
@@ -62,13 +67,4 @@ class chain(math_block):
             latex_list.append(item_latex)
         out = "".join(latex_list)
         return out if self.sign else "-({})".format(out)
-=======
-                latex = term.latex(show_plus=(index != 0))
 
-            latex_list.append(latex)
-                
-            out = "".join(latex_list)
-        if show_plus or not self.sign:
-            return "{}({})".format(object_sign(show_plus,self.sign),out)
-        return out
->>>>>>> 5961f465424fb6d8574ef03fadc31e702186ebda
