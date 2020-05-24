@@ -22,19 +22,6 @@ class basic_exponential(unittest.TestCase):
         basic_exp_B = exponential(y,2)
         self.assertEqual(basic_exp_B.latex(), "(-y)^{2}")
 
-    def test_exponential_latex(self):
-        exp1 = exponential(2,3)
-        exp2 = exponential(exp1, 2)
-        exp3 = exponential(exp1, exp2)
-
-        self.assertEqual(exp3.latex(), "(2^{3})^{(2^{3})^{2}}")
-
-    def test_basic_evaluation(self):
-        basic_exp_A = exponential(2,-3)
-        self.assertEqual(basic_exp_A.evaluate(), 2**-3)
-        basic_exp_B = exponential(4,2)
-        self.assertEqual(basic_exp_B.evaluate(), 4**2)
-
     def test_variable_evaluation(self):
         x = variable("x")
         x.value = 3
@@ -45,6 +32,21 @@ class basic_exponential(unittest.TestCase):
         y.value = 2
         basic_exp_B = exponential(y,3)
         self.assertEqual(basic_exp_B.evaluate(), (-2)**3)
+
+    def test_exponential_latex(self):
+        exp1 = exponential(2,3)
+        exp2 = exponential(exp1, 2)
+        exp3 = exponential(exp1, exp2)
+
+        self.assertEqual(exp3.latex(), "(2^{3})^{(2^{3})^{2}}")
+
+    def test_exponential_evaluation(self):
+        basic_exp_A = exponential(2,-3)
+        self.assertEqual(basic_exp_A.evaluate(), 2**-3)
+        basic_exp_B = exponential(4,2)
+        self.assertEqual(basic_exp_B.evaluate(), 4**2)
+
+
 
 
         
