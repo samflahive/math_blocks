@@ -1,55 +1,46 @@
 from .math_block import math_block
-from .chains import chain
-from .number_formatting import object_sign
+from .numbers import number
+from .complex_numbers import complex_number
+# import entire module to avoid circular dependency
+#import .fractions.fraction
+import math_blocks.chains
+
 
 class product(math_block):
+    # sums of math_block objects
 
-    def __init__(self, terms, sign=True):
-        self.terms = terms
-        self.sign = sign
-        math_block.__init__(self, sign=sign, chain_bracket=True)
+    def __init__(self, items, sign=True):
+        math_block.__init__(self, sign=sign)
 
-        
-    def __mul__(self, other):
-        if isinstance(other, product):
-            return product(terms=self.terms+other.terms,
-                           sign=(self.sign==other.sign))
-        else:
-            return product(self.terms+[other])
+        math_block_items = []
+        for item in items:
+            if isinstance(item, (int, float)):
+                math_block_items.append(number(item))
+            else:
+                math_block_items.append(item)
 
-    def __add__(self, other):
-        # UPDATE - signs
-        return chain([self, other])
-    
-    def scale(self, scalar):
-        return product([scalar, *self.terms])
-            
+        self.items = math_block_items
+
     def evaluate(self):
         total = 1
-        for term in self.terms:
-            total *= term if isinstance(term, (int, float)) else term.evaluate()
-        return total if self.sign else -total
-        
+        for i in self.items:
+            total *= i.evaluate()
+        if self.sign:
+            return total
+        return -total
 
-    def latex(self, explicit=False, show_plus=False, show_neg=False):
+    def latex(self, explicit=False):
         latex_terms = []
-        for term in self.terms:
-            if isinstance(term, (int, float)):
-                term_latex = str(term)
-            elif term.product_bracket:
-                term_latex = "({})".format(term.latex(explicit=explicit))
+        for i in self.items:
+            if isinstance(i, (complex_number, math_blocks.chains.chain)): # add chain
+                item_latex = "(%s)" % i.latex(explicit=explicit)
+
             else:
-                term_latex = term.latex(explicit=explicit)
-            latex_terms.append(term_latex)
-        out = " \\cdot ".join(latex_terms)
-        if show_plus or not self.sign:
-            out = "{}({})".format(object_sign(show_plus=show_plus, sign=self.sign),out)
-        return out
-    
-    def merge_coeffs(coeffs):
-        total = 1
-        for coeff in coeffs:
-            total *= coeff
-        return total
-        
-            
+                item_latex = i.latex(explicit=explicit)
+
+            latex_terms.append(item_latex)
+
+        if self.sign:
+            return r" \cdot ".join(latex_terms)
+        else:
+            return "-(%s)" % r" \cdot ".join(latex_terms)

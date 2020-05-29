@@ -1,24 +1,12 @@
 import unittest
 # Path hack.
 import sys, os
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../..'))
+
 from math_blocks.fractions import fraction
 from math_blocks.variables import variable
 
-class basic_fraction(unittest.TestCase):
-    def test_basic_latex(self):
-        # test the latex expression for fractions with numbers only
-        fr = fraction(3,2)
-        self.assertEqual(fr.latex(), "\\frac{3}{2}")
-        fr2 = fraction(-2,2, sign=False)
-        self.assertEqual(fr2.latex(), "-\\frac{-2}{2}")
-
-    def test_basic_eval(self):
-        fr = fraction(3,2)
-        self.assertEqual(fr.evaluate(), 1.5)
-        fr2 = fraction(-2,2, sign=False)
-        self.assertEqual(fr2.evaluate(), 1)
-
+class variable_fraction_test(unittest.TestCase):
     def test_variable_latex(self):
         x = variable("x", value=2, sign=True)
         fr = fraction(3,x)
@@ -38,7 +26,6 @@ class basic_fraction(unittest.TestCase):
         fr2 = fraction(x,y, sign=False)
         fr3 = -fr2
         self.assertEqual(fr3.evaluate(), -1)
-
 
 
 if __name__ == '__main__':

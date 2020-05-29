@@ -1,65 +1,36 @@
 from .math_block import math_block
-from .chains import chain
-from .products import product
-from .polynomials import polynomial
-from .exponentials import exponential
-from .fractions import fraction
+from .numbers import number
+from .complex_numbers import complex_number
+
 import math
-from .number_formatting import object_sign
 
 class logarithm(math_block):
     
     def __init__(self, exponent, base, sign=True):
+        math_block.__init__(self, sign=sign)
+
+        self.eval_complex_flag = False
+        
+        if isinstance(base, (int, float)):
+            base = number(base)
+        elif isinstance(base, complex_number):
+            self.eval_complex_flag = True
+            
+        if isinstance(exponent, (int, float)):
+            exponent = number(exponent)
+        elif isinstance(exponent, complex_number):
+            self.eval_complex_flag = True
+            
         self.exponent = exponent
         self.base = base
-        self.sign = sign
-        math_block.__init__(self, sign=sign)
-        
-    def __add__(self, other):
-        if not isinstance(other, logarithm) or self.base != other.base:
-            return chain([self, other])
-        return logarithm(self.exponent*other.exponent, self.base)
 
-    def __sub__(self, other):
-        if not isinstance(other, logarithm) or self.base != other.base:
-            return chain([self, -other])
-        new_expo = self.exponent/other.exponent if self.exponent%other.exponent != 0 else int(self.exponent/other.exponent)
-        return logarithm(new_expo, self.base)
-
-    def __rsub__(self, other):
-        return chain([other, -self])
-
-    def __truediv__(self, other):
-        if isinstance(other, logarithm) and (self.base == other.base or self.exponent == other.exponent):
-            if self.base == other.base:
-                # log_b(Y)/log_b(X) = log_X(Y)
-                return logarithm(self.exponent, other.exponent)
-            else:
-                # log_b(Y)/log_x(Y) = log_b(X)
-                return logarithm(other.base, self.base)
-
-        return fraction(self, other)
-
-    def __rtruediv__(self, other):
-        return fraction(other, self)
-        
-        
-        
-
-    def __mul__(self, other):
-        if isinstance(other, logarithm) and (other.exponent == self.base or self.exponent == other.base):
-            
-            if self.exponent == other.base:
-                return logarithm(other.exponent, self.base)
-            else:
-                return logarithm(self.exponent, other.base)
-        else:
-            return product([self, other])
 
     def evaluate(self):
-        # extract the value of the base whether its a number or variable
-        exponent_value = self.exponent if isinstance(self.exponent, (int, float, complex)) else self.exponent.evaluate()
-        base_value = self.base if isinstance(self.base, (int, float, complex)) else self.base.evaluate()
+        if self.eval_complex_flag:
+            raise ValueError("evaluated logarithms cannot contain complex numbers")
+        
+        exponent_value = self.exponent.evaluate()
+        base_value = self.base.evaluate()
         value_out =  math.log(exponent_value, base_value)
 
         # correct value out for machine artifacts
@@ -69,15 +40,15 @@ class logarithm(math_block):
         return value_out if self.sign else -value_out
     
 
-    def latex(self, explicit=False, show_plus=False):
-        # extract the value of the components whether they are numbers or variables
-        exponent_symbol = self.exponent if isinstance(self.exponent, (int, float, complex)) else self.exponent.latex()
-        base_symbol = self.base if isinstance(self.base, (int, float, complex)) else self.base.latex()
+    def latex(self, explicit=False):
+        exponent_symbol = self.exponent.latex()
+        base_symbol = self.base.latex()
         if explicit:
-            out = "log_{{({})}}({})".format(base_symbol, exponent_symbol)
+            out = "log_{%s}(%s)" % (base_symbol, exponent_symbol)
         else:
-            out = "log_{{{}}}({})".format(base_symbol, exponent_symbol)
-        out = object_sign(show_plus=show_plus, sign=self.sign)+out
-        return out
+            out = "log_{%s}%s" % (base_symbol, exponent_symbol)
+        if self.sign:
+            return out
+        return "-%s" % out
         
         
