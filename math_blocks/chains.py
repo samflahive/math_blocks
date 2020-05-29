@@ -10,17 +10,13 @@ class chain(math_block):
     # sums of math_block objects
 
     def __init__(self, items, sign=True):
-        """chains or simple sums, items refers to a list of tuples.
-            The first value in each tuple is a number or math_block object,
-            the second value is a sign, True=+ and False=- """
+        """chains are simple sums, items refers to a list of operands"""
         math_block.__init__(self, sign=sign)
         
         math_block_items = []
         for item in items:
-            if not isinstance(item, (list, tuple)):
-                item = (item, True)
-            if isinstance(item[0], (int, float)):
-                math_block_items.append((number(item[0]), item[1]))
+            if isinstance(item, (int, float)):
+                math_block_items.append(number(item))
             else:
                 math_block_items.append(item)
                 
@@ -31,13 +27,7 @@ class chain(math_block):
         evaluate this chains
         return number
         """
-        total = 0
-        for (item, sign) in self.items:
-            item_value = item.evaluate()
-            if not sign:
-                total -= item_value
-            else:
-                total += item_value
+        total = sum(item.evaluate() for item in self.items)
         if self.sign:
             return total
         return -total
@@ -48,25 +38,14 @@ class chain(math_block):
         """
         latex_list = []
         
-        for index, (item, sign) in enumerate(self.items):
-
-            sign_sym = "+" if sign else "-"
-
+        for index, item in enumerate(self.items):
             bracketed = isinstance(item, (chain, complex_number, math_blocks.products.product))
-            if not bracketed:
-                item_latex = item.latex(explicit=explicit) # does not show '+' but does show '-'
-            else:
-                item_latex = "(%s)" % item.latex(explicit=explicit)
-
+            
             # add sign
-            if not (index == 0 and not explicit and sign):
-                if item.sign or bracketed: # no sign inherent to the item
-                    item_latex = "%s%s" % (sign_sym, item_latex)
-                else: # already a "-" before the item
-                    item_latex = "%s(%s)" % (sign_sym, item_latex)
-                    
+            # first item (if positive) should not show a +, unless we are being explicit
+            show_plus = (not (index == 0 and not explicit))
 
-            latex_list.append(item_latex)
+            latex_list.append(item.latex(explicit=explicit, show_plus=show_plus))
 
         out = "".join(latex_list)
         return out if self.sign else "-({})".format(out)
