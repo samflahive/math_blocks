@@ -10,7 +10,7 @@ class chain_product_test(unittest.TestCase):
         pr = product([chain([3,2]),2])
         self.assertEqual(pr.latex(), "(3+2) \\cdot 2")
         pr2 = product([-2,-chain([3,-2])])
-        self.assertEqual(pr2.latex(), "-2 \\cdot (-(3+(-2)))")
+        self.assertEqual(pr2.latex(), "-2 \\cdot (-(3-2))")
 
     def test_chain_eval(self):
         pr = product([chain([3,2]),2])
