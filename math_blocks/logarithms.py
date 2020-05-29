@@ -40,15 +40,17 @@ class logarithm(math_block):
         return value_out if self.sign else -value_out
     
 
-    def latex(self, explicit=False):
+    def latex(self, explicit=False, show_plus=False):
         exponent_symbol = self.exponent.latex()
         base_symbol = self.base.latex()
         if explicit:
             out = "log_{%s}(%s)" % (base_symbol, exponent_symbol)
         else:
             out = "log_{%s}%s" % (base_symbol, exponent_symbol)
-        if self.sign:
-            return out
-        return "-%s" % out
+        if not self.sign:
+            return "-%s" % out
+        if show_plus:
+            return "+%s" % out
+        return out
         
         

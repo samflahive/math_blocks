@@ -1,6 +1,5 @@
 from .math_block import math_block
 from .numbers import number
-from .products import product
 
 class fraction(math_block):
     def __init__(self, numerator, denominator, sign=True):
@@ -20,11 +19,10 @@ class fraction(math_block):
             return val
         return -val
 
-    def latex(self, explicit=False):
-        if self.sign:
-            return "\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
-        else:
+    def latex(self, explicit=False, show_plus=False):
+        if not self.sign:
             return "-\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
+        if show_plus:
+            return "+\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
+        return "\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
 
-    def __mul__(self, other):
-        return product([self, other])

@@ -29,7 +29,7 @@ class product(math_block):
             return total
         return -total
 
-    def latex(self, explicit=False):
+    def latex(self, explicit=False, show_plus=False):
         latex_terms = []
         for i in self.items:
             if isinstance(i, (complex_number, math_blocks.chains.chain)): # add chain
@@ -40,7 +40,8 @@ class product(math_block):
 
             latex_terms.append(item_latex)
 
-        if self.sign:
-            return r" \cdot ".join(latex_terms)
-        else:
+        if not self.sign:
             return "-(%s)" % r" \cdot ".join(latex_terms)
+        if show_plus:
+            return "+(%s)" % r" \cdot ".join(latex_terms)
+        return r" \cdot ".join(latex_terms)

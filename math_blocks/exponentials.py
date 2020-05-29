@@ -28,7 +28,7 @@ class exponential(math_block):
          return val if self.sign else -val
 
 
-     def latex(self, explicit=False, show_zero_power=True):
+     def latex(self, explicit=False, show_zero_power=True, show_plus=False):
           base_symbol = self.base.latex(explicit=explicit)
           if not self.base.sign or not isinstance(self.base, (number, variable)):
                base_symbol = "(%s)" % base_symbol
@@ -45,7 +45,11 @@ class exponential(math_block):
                else:
                     out = "{}^{{{}}}".format(base_symbol, power_symbol)
 
-          return out if self.sign else "-%s" % out
+          if not self.sign:
+               return "-%s" % out
+          if show_plus:
+               return "+%s" % out
+          return out
 
 
                

@@ -39,14 +39,18 @@ class chain(math_block):
         latex_list = []
         
         for index, item in enumerate(self.items):
-            bracketed = isinstance(item, (chain, complex_number, math_blocks.products.product))
+            #bracketed = isinstance(item, (chain, complex_number, math_blocks.products.product))
             
             # add sign
             # first item (if positive) should not show a +, unless we are being explicit
-            show_plus = (not (index == 0 and not explicit))
+            child_show_plus = (not (index == 0 and not explicit))
 
-            latex_list.append(item.latex(explicit=explicit, show_plus=show_plus))
+            latex_list.append(item.latex(explicit=explicit, show_plus=child_show_plus))
 
         out = "".join(latex_list)
-        return out if self.sign else "-({})".format(out)
+        if not self.sign:
+            return "-(%s)" % out
+        if show_plus:
+            return "+(%s)" % out
+        return out
 

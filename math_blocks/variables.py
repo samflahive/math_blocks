@@ -10,9 +10,11 @@ class variable(math_block):
             value = number(value)
         self.value = value
 
-    def latex(self, explicit=False):
+    def latex(self, explicit=False, show_plus=False):
         if not self.sign:
             return "-%s" % self.symbol
+        if show_plus:
+            return "+%s" % self.symbol
         return self.symbol
     
     def evaluate(self):
