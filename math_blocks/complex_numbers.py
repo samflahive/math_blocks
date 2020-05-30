@@ -43,4 +43,9 @@ class complex_number(math_blocks.math_block):
             return "+(%s)" % out
         return out
 
-
+    def __add__(self, other):
+        if isinstance(other, complex_number):
+            left_real, left_imag = (self.real, self.imaginary) if self.sign else (-self.real, -self.imaginary)
+            right_real, right_imag = (other.real, other.imaginary) if other.sign else (-other.real, -other.imaginary)
+            return complex_number(left_real+right_real, left_imag+right_imag)
+        return math_blocks.chain([self, other])

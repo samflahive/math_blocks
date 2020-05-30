@@ -25,3 +25,9 @@ class fraction(math_blocks.math_block):
             return "+\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
         return "\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
 
+
+    #def __add__(self, other):
+        # todo: need to implement equality operators first
+        #if isinstance(self, fraction) and (self.denominator == other.denominator()):
+        #    return fraction(self.numerator+other.numerator, self.denominator)
+        

@@ -32,4 +32,8 @@ class number(math_block):
 
 
     def __add__(self, other):
+        if isinstance(other, number):
+            return number(value=self.evaluate()+other.evaluate())
+        if isinstance(other, (int,float)):
+            return number(value=(self.evaluate()+other))            
         return math_blocks.chain([self, other])
