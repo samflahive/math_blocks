@@ -22,3 +22,12 @@ class number(math_block):
         return -self.value
 
 
+    def __eq__(self, other):
+        if isinstance(other, number):
+            return ((self.value == other.value) and (self.sign == other.sign))
+        if isinstance(other, (int, float)):
+            self_value = self.value if self.sign else -self.value
+            return self_value == other
+        return False
+
+
