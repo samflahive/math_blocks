@@ -8,3 +8,4 @@ from .complex_numbers import complex_number
 from .chains import chain
 from .products import product
 from .polynomials import polynomial
+from .simple_polys import simple_poly
