@@ -1,16 +1,14 @@
-from .math_block import math_block
-from .numbers import number
-from .variables import variable
+import math_blocks
 
-class complex_number(math_block):
+class complex_number(math_blocks.math_block):
 
     def __init__(self, real, imaginary, sign=True):
-        math_block.__init__(self, sign=sign)
+        math_blocks.math_block.__init__(self, sign=sign)
 
         if isinstance(real, (int, float)):
-            real = number(real)
+            real = math_blocks.number(real)
         if isinstance(imaginary, (int, float)):
-            imaginary = number(imaginary)
+            imaginary = math_blocks.number(imaginary)
 
         self.real = real
         self.imaginary = imaginary
@@ -23,12 +21,12 @@ class complex_number(math_block):
 
     def latex(self, explicit=False, show_plus=False):
         bracket_imag = False
-        if isinstance(self.real, (number, variable)):
+        if isinstance(self.real, (math_blocks.number, math_blocks.variable)):
             real_latex = self.real.latex()
         else:
             real_latex = "(%s)" % self.real.latex()
 
-        if isinstance(self.imaginary, (number, variable)):
+        if isinstance(self.imaginary, (math_blocks.number, math_blocks.variable)):
             imaginary_latex = self.imaginary.latex()
         else:
             bracket_imag = True

@@ -1,19 +1,17 @@
-from .math_block import math_block
-from .numbers import number
-from .variables import variable
+import math_blocks
 import math
 import copy
 
-class exponential(math_block):
+class exponential(math_blocks.math_block):
      
      def __init__(self, base, power, sign=True):
-          math_block.__init__(self, sign=sign)
+          math_blocks.math_block.__init__(self, sign=sign)
 
           # replace python numbers with mathblock numbers
           if isinstance(base, (int, float)):
-               base = number(base)
+               base = math_blocks.number(base)
           if isinstance(power, (int, float)):
-               power = number(power)
+               power = math_blocks.number(power)
                
           self.base = base
           self.power = power
@@ -30,7 +28,7 @@ class exponential(math_block):
 
      def latex(self, explicit=False, show_zero_power=True, show_plus=False):
           base_symbol = self.base.latex(explicit=explicit)
-          if not self.base.sign or not isinstance(self.base, (number, variable)):
+          if not self.base.sign or not isinstance(self.base, (math_blocks.number, math_blocks.variable)):
                base_symbol = "(%s)" % base_symbol
                
           power_symbol = self.power.latex(explicit=explicit)

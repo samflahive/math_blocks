@@ -1,19 +1,16 @@
-from .math_block import math_block
-from .numbers import number
-from .complex_numbers import complex_number
+import math_blocks
 
-
-class chain(math_block):
+class chain(math_blocks.math_block):
     # sums of math_block objects
 
     def __init__(self, items, sign=True):
         """chains are simple sums, items refers to a list of operands"""
-        math_block.__init__(self, sign=sign)
+        math_blocks.math_block.__init__(self, sign=sign)
         
         math_block_items = []
         for item in items:
             if isinstance(item, (int, float)):
-                math_block_items.append(number(item))
+                math_block_items.append(math_blocks.number(item))
             else:
                 math_block_items.append(item)
                 
