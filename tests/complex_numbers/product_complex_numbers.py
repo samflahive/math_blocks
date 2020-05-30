@@ -17,7 +17,7 @@ class product_complex_test(unittest.TestCase):
           c1 = complex_number(product([3,2]),2)
           self.assertEqual(c1.evaluate(), complex(6,2))
           c2= complex_number(-2,-product([2,2]), sign=False)
-          self.assertEqual(c2.evaluate(), -complex(-2,4))
+          self.assertEqual(c2.evaluate(), -complex(-2,-4))
 
 
 if __name__ == '__main__':

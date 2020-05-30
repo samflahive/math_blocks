@@ -14,7 +14,7 @@ class product_exponential_test(unittest.TestCase):
 
     def test_product_eval(self):
         basic_exp_A = exponential(2,-product([-3,2]))
-        self.assertEqual(basic_exp_A.evaluate(), 2**(-6))
+        self.assertEqual(basic_exp_A.evaluate(), 2**(6))
         basic_exp_B = exponential(product([2,2]), 2)
         self.assertEqual(basic_exp_B.evaluate(), 16)   
 
