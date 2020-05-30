@@ -1,9 +1,6 @@
 from .math_block import math_block
 from .numbers import number
 from .complex_numbers import complex_number
-import math_blocks.products
-
-#import math_blocks.products
 
 
 class chain(math_block):
