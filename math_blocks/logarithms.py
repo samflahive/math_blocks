@@ -1,24 +1,25 @@
+import math_blocks
 from .math_block import math_block
 from .numbers import number
 from .complex_numbers import complex_number
 
 import math
 
-class logarithm(math_block):
+class logarithm(math_blocks.math_block):
     
     def __init__(self, exponent, base, sign=True):
-        math_block.__init__(self, sign=sign)
+        math_blocks.math_block.__init__(self, sign=sign)
 
         self.eval_complex_flag = False
         
         if isinstance(base, (int, float)):
-            base = number(base)
-        elif isinstance(base, complex_number):
+            base = math_blocks.number(base)
+        elif isinstance(base, math_blocks.complex_number):
             self.eval_complex_flag = True
             
         if isinstance(exponent, (int, float)):
-            exponent = number(exponent)
-        elif isinstance(exponent, complex_number):
+            exponent = math_blocks.number(exponent)
+        elif isinstance(exponent, math_blocks.complex_number):
             self.eval_complex_flag = True
             
         self.exponent = exponent

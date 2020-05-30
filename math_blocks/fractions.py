@@ -1,14 +1,13 @@
-from .math_block import math_block
-from .numbers import number
+import math_blocks
 
-class fraction(math_block):
+class fraction(math_blocks.math_block):
     def __init__(self, numerator, denominator, sign=True):
-        math_block.__init__(self, sign=sign)
+        math_blocks.math_block.__init__(self, sign=sign)
 
         if isinstance(numerator, (int, float)):
-            numerator = number(numerator)
+            numerator = math_blocks.number(numerator)
         if isinstance(denominator, (int, float)):
-            denominator = number(denominator)
+            denominator = math_blocks.number(denominator)
 
         self.numerator = numerator
         self.denominator = denominator

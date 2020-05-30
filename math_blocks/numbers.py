@@ -1,5 +1,5 @@
 from .math_block import math_block
-
+import math_blocks
 class number(math_block):
 
     def __init__(self, value, sign=True):
@@ -31,3 +31,5 @@ class number(math_block):
         return False
 
 
+    def __add__(self, other):
+        return math_blocks.chain([self, other])

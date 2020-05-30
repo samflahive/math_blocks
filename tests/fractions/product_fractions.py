@@ -17,7 +17,7 @@ class product_fraction_test(unittest.TestCase):
         fr = fraction(product([3,1]),2)
         self.assertEqual(fr.evaluate(), 1.5)
         fr2 = fraction(1,-product([-2,3]), sign=False)
-        self.assertEqual(fr2.evaluate(), 1/6)
+        self.assertEqual(fr2.evaluate(), -1/6)
 
     
 

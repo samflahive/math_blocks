@@ -1,17 +1,16 @@
-from .math_block import math_block
-from .numbers import number
+import math_blocks
 
-class polyterm(math_block):
+class polyterm(math_blocks.math_block):
 
     def __init__(self, coeff, pcomp, sign=True):
         if isinstance(coeff, (int,float)):
-            coeff = number(coeff)
+            coeff = math_blocks.number(coeff)
 
         # integrate coeff sign into polyterm parent
         sign = sign and coeff.sign
         coeff.sign = True
         
-        math_block.__init__(self, sign=sign)
+        math_blocks.math_block.__init__(self, sign=sign)
         self.coeff = coeff
         self.pcomp = pcomp
 
