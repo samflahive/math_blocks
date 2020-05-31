@@ -37,3 +37,10 @@ class number(math_block):
         if isinstance(other, (int,float)):
             return number(value=(self.evaluate()+other))            
         return math_blocks.chain([self, other])
+
+    def __truediv__(self, other):
+        if isinstance(other, number):
+            return number(value=self.evaluate()/other.evaluate())
+        if isinstance(other, (int,float)):
+            return number(value=self.evaluate()/other)
+        return math_blocks.fraction(self, other)
