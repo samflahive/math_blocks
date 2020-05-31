@@ -49,3 +49,11 @@ class complex_number(math_blocks.math_block):
             right_real, right_imag = (other.real, other.imaginary) if other.sign else (-other.real, -other.imaginary)
             return complex_number(left_real+right_real, left_imag+right_imag)
         return math_blocks.chain([self, other])
+
+    def conjugate(self):
+        return complex_number(real=self.real, imaginary=-self.imaginary, sign=self.sign)
+
+    def conjugate_product(self):
+        return math_blocks.exponential(self.real,2) * math_blocks.exponential(self.imaginary,2)
+
+    
