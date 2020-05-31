@@ -1,9 +1,9 @@
-from .chains import chain
+import math_blocks
 from copy import deepcopy
 
-class polynomial(chain):
+class polynomial(math_blocks.chain):
     def __init__(self, items, sign=True):
-        chain.__init__(self, items=items, sign=sign)
+        math_blocks.chain.__init__(self, items=items, sign=sign)
 
 
     def __add__(self, other):
@@ -17,7 +17,7 @@ class polynomial(chain):
                 other = other.ripple_sign()
             combined_terms = self_poly.items + other.items
             return polynomial(items=combined_terms)
-        return chain([self, other])
+        return math_blocks.chain([self, other])
 
     def ripple_sign(self):
         # make the sign true
@@ -27,3 +27,14 @@ class polynomial(chain):
                 item.sign = not item.sign
             poly.sign = True
         return poly
+
+
+    def __mul__(self, other):
+        if isinstance(other, polynomial):
+            items = []
+            for self_term in self.items:
+                for other_term in other.items:
+                    items.append(self_term*other_term)
+            return polynomial(items=items, sign=(self.sign == other.sign))
+        else:
+            return math_blocks.product([self, other])

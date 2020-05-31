@@ -30,3 +30,11 @@ class polyterm(math_blocks.math_block):
         if self.sign:
             return out
         return -out
+
+    def __mul__(self, other):
+        if isinstance(other, polyterm):
+            return polyterm(coeff=(self.coeff*other.coeff),
+                            pcomp=(self.pcomp*other.pcomp),
+                            sign=(self.sign == other.sign))
+        else:
+            return NotImplemented

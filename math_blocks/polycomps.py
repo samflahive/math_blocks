@@ -27,6 +27,11 @@ class polycomp(product):
         if show_plus:
             return "+%s" % out
         return out
+
+    def __mul__(self, other):
+        if isinstance(other, polycomp):
+            return polycomp(expos=(self.items+other.items), sign=(self.sign==other.sign))
+        return NotImplemented
         
         
         
