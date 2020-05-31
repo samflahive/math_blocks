@@ -56,4 +56,10 @@ class complex_number(math_blocks.math_block):
     def conjugate_product(self):
         return math_blocks.exponential(self.real,2) * math_blocks.exponential(self.imaginary,2)
 
-    
+    def __mul__(self, other):
+        if isinstance(other, complex_number):
+            real = self.real*other.real - self.imaginary*other.imaginary
+            imaginary = self.real*other.imaginary + self.imaginary*other.real
+            return complex_number(real=real,  imaginary=imaginary, sign=(self.sign==other.sign))
+        
+        return NotImplemented

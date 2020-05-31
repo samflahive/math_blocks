@@ -31,3 +31,5 @@ class fraction(math_blocks.math_block):
         #if isinstance(self, fraction) and (self.denominator == other.denominator()):
         #    return fraction(self.numerator+other.numerator, self.denominator)
         
+
+    # def __mul__(self, other): need to implement equality operators
