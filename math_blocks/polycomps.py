@@ -3,6 +3,8 @@ from .products import product
 class polycomp(product):
     def __init__(self, expos, sign=True):
         # todo: add integrety checks for variable^number
+        # add option to avoid integrity check - eg for math_board exps not math_block exps
+
         
         product.__init__(self, items=expos, sign=sign)
         d_var = {}
