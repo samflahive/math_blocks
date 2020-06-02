@@ -10,3 +10,4 @@ from .products import product
 from .polynomials import polynomial
 from .simple_polys import simple_poly
 from .polyterms import polyterm
+from .polycomp import polycomp
