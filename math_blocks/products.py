@@ -54,4 +54,4 @@ class product(math_block):
             if p != other.items[i]:
                 return False
 
-        return True
+        return self.sign == other.sign

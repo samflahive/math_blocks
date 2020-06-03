@@ -30,7 +30,9 @@ class fraction(math_blocks.math_block):
         if not isinstance(other, fraction):
             return False
 
-        return (self.denominator == other.denominator and self.numerator == other.numerator)
+        return (self.denominator == other.denominator
+                and self.numerator == other.numerator
+                and self.sign == other.sign)
 
 
     #def __add__(self, other):

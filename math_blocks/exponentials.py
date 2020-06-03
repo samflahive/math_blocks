@@ -52,5 +52,7 @@ class exponential(math_blocks.math_block):
      def __eq__(self, other):
           if not isinstance(other, exponential):
                return False
-          return (self.base == other.base and self.power == other.power)
+          return (self.base == other.base
+                  and self.power == other.power
+                  and self.sign == other.sign)
                

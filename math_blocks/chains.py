@@ -58,4 +58,4 @@ class chain(math_blocks.math_block):
             if c != other.items[i]:
                 return False
 
-        return True
+        return self.sign == other.sign

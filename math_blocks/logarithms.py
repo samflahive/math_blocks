@@ -58,6 +58,8 @@ class logarithm(math_blocks.math_block):
         if not isinstance(other, logarithm):
             return False
 
-        return (self.base == other.base and self.exponent == other.exponent)
+        return (self.base == other.base
+                and self.exponent == other.exponent
+                and self.sign == other.sign)
         
         

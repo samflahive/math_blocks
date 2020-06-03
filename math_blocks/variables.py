@@ -41,5 +41,5 @@ class variable(math_blocks.math_block):
     def __eq__(self, other):
         if not isinstance(other, variable):
             return False
-        return self.symbol == other.symbol
+        return (self.symbol == other.symbol and self.sign == other.sign)
             

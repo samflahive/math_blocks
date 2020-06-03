@@ -43,4 +43,6 @@ class polyterm(math_blocks.math_block):
         if not isinstance(other, polyterm):
             return False
 
-        return (self.coeff == other.coeff and self.pcomp == other.pcomp)
+        return (self.coeff == other.coeff
+                and self.pcomp == other.pcomp
+                and self.sign == other.sign)

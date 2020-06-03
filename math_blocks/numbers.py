@@ -62,4 +62,4 @@ class number(math_block):
     def __eq__(self, other):
         if not isinstance(other, number):
             return False
-        return self.value == other.value
+        return (self.value == other.value and self.sign == other.sign)
