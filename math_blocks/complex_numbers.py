@@ -63,3 +63,8 @@ class complex_number(math_blocks.math_block):
             return complex_number(real=real,  imaginary=imaginary, sign=(self.sign==other.sign))
         
         return NotImplemented
+
+    def __eq__(self, other):
+        if not isinstance(other, complex_number):
+            return False
+        return (self.real == other.real and self.imaginary == other.imaginary)

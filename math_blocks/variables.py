@@ -37,4 +37,9 @@ class variable(math_blocks.math_block):
             return math_blocks.polyterm(coeff=self*other.coeff, pcomp=other.pcomp, sign=other.sign)
         else:
             return math_blocks.product([self, other])
+
+    def __eq__(self, other):
+        if not isinstance(other, variable):
+            return False
+        return self.symbol == other.symbol
             

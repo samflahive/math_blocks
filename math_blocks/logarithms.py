@@ -53,5 +53,11 @@ class logarithm(math_blocks.math_block):
         if show_plus:
             return "+%s" % out
         return out
+
+    def __eq__(self, other):
+        if not isinstance(other, logarithm):
+            return False
+
+        return (self.base == other.base and self.exponent == other.exponent)
         
         

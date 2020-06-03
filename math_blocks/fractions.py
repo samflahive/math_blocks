@@ -26,6 +26,13 @@ class fraction(math_blocks.math_block):
         return "\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
 
 
+    def __eq__(self, other):
+        if not isinstance(other, fraction):
+            return False
+
+        return (self.denominator == other.denominator and self.numerator == other.numerator)
+
+
     #def __add__(self, other):
         # todo: need to implement equality operators first
         #if isinstance(self, fraction) and (self.denominator == other.denominator()):

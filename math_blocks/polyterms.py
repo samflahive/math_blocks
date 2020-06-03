@@ -38,3 +38,9 @@ class polyterm(math_blocks.math_block):
                             sign=(self.sign == other.sign))
         else:
             return NotImplemented
+
+    def __eq__(self, other):
+        if not isinstance(other, polyterm):
+            return False
+
+        return (self.coeff == other.coeff and self.pcomp == other.pcomp)

@@ -45,3 +45,13 @@ class product(math_block):
         if show_plus:
             return "+(%s)" % r" \cdot ".join(latex_terms)
         return r" \cdot ".join(latex_terms)
+
+    def __eq__(self, other):
+        if not isinstance(other, product):
+            return False
+
+        for i,p in enumerate(self.items):
+            if p != other.items[i]:
+                return False
+
+        return True

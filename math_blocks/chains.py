@@ -48,3 +48,14 @@ class chain(math_blocks.math_block):
             return "+(%s)" % out
         return out
 
+    def __eq__(self, other):
+        if not isinstance(other, chain):
+            return False
+        if len(self.items) != len(other.items):
+            return False
+
+        for i,c in enumerate(self.items):
+            if c != other.items[i]:
+                return False
+
+        return True
