@@ -1,5 +1,6 @@
 import unittest
-from creation.complex_numbers import *
+from creation import *
+from operations import *
 
 if __name__ == '__main__':
     unittest.main()
