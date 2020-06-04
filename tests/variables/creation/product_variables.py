@@ -1,7 +1,5 @@
 import unittest
-# Path hack.
-import sys, os
-sys.path.insert(0, os.path.abspath('../..'))
+
 from math_blocks.variables import variable
 from math_blocks.products import product
 

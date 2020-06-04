@@ -1,8 +1,6 @@
 import unittest
 from math import log
-# Path hack.
-import sys, os
-sys.path.insert(0, os.path.abspath('../..'))
+
 from math_blocks.logarithms import logarithm
 from math_blocks.products import product
 

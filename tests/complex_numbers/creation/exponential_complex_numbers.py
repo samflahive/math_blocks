@@ -1,7 +1,5 @@
 import unittest
-# Path hack.
-import sys, os
-sys.path.insert(0, os.path.abspath('../..'))
+
 from math_blocks.complex_numbers import complex_number
 from math_blocks.exponentials import exponential
 

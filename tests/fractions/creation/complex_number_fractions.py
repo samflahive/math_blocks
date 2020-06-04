@@ -1,7 +1,5 @@
 import unittest
-# Path hack.
-import sys, os
-sys.path.insert(0, os.path.abspath('../..'))
+
 
 from math_blocks.fractions import fraction
 from math_blocks.complex_numbers import complex_number
