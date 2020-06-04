@@ -1,6 +1,6 @@
 import unittest
-from creation import *
-from operations import *
+from .polynomials import *
+from .simple_polys import *
 
 
 if __name__ == '__main__':

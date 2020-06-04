@@ -12,7 +12,7 @@ class number_eq(unittest.TestCase):
         main_n = math_blocks.number(3)
         n = math_blocks.number(3)
         self.assertEqual(True, main_n == n)
-        self.assertEqual(True, main_n == -n)
+        self.assertEqual(False, main_n == -n)
 
     def test_variable_eq(self):
         main_n = math_blocks.number(3)

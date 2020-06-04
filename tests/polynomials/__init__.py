@@ -1,6 +1,7 @@
 import unittest
-from creation.polynomials import *
-from creation.simple_polys import *
+from creation import *
+#from operations import *
+
 if __name__ == '__main__':
     unittest.main()
 
