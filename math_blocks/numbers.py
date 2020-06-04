@@ -61,5 +61,7 @@ class number(math_block):
 
     def __eq__(self, other):
         if not isinstance(other, number):
+            if isinstance(other, (int, float)):
+                return other == self.evaluate()
             return False
         return (self.value == other.value and self.sign == other.sign)
