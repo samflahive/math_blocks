@@ -55,4 +55,9 @@ class exponential(math_blocks.math_block):
           return (self.base == other.base
                   and self.power == other.power
                   and self.sign == other.sign)
+
+     def __mul__(self, other):
+          if isinstance(other, exponential) and self.base == other.base:
+               return exponential(self.base, self.power+other.power, sign=(self.sign == other.sign))                    
+          return math_blocks.product([self, other])
                
