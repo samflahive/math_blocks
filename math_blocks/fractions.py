@@ -35,10 +35,11 @@ class fraction(math_blocks.math_block):
                 and self.sign == other.sign)
 
 
-    #def __add__(self, other):
-        # todo: need to implement equality operators first
-        #if isinstance(self, fraction) and (self.denominator == other.denominator()):
-        #    return fraction(self.numerator+other.numerator, self.denominator)
+    def __add__(self, other):
+        if isinstance(self, fraction) and (self.denominator == other.denominator()):
+            other_num = other.numerator if (other.sign == self.sign) else -other.numerator
+            return fraction(self.numerator+other_num, self.denominator)
+        return math_blocks.chain([self, other])
         
 
     # def __mul__(self, other): need to implement equality operators
