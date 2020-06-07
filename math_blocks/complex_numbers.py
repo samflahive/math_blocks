@@ -1,3 +1,5 @@
+import math
+
 import math_blocks
 
 class complex_number(math_blocks.math_block):
@@ -12,6 +14,9 @@ class complex_number(math_blocks.math_block):
 
         self.real = real
         self.imaginary = imaginary
+        self.form = "rect"
+        self.radius = None
+        self.angle = None
 
     def evaluate(self):
         val = complex(self.real.evaluate(), self.imaginary.evaluate())
@@ -70,3 +75,26 @@ class complex_number(math_blocks.math_block):
         return (self.real == other.real
                 and self.imaginary == other.imaginary
                 and self.sign == other.sign)
+
+    @staticmethod
+    def from_polar(angle, radius, sign=True):
+        real = radius * math.cos(angle)
+        imaginary = radius * math.sin(angle)
+        cx = math_blocks.complex_number(real, imaginary, sign=sign)
+
+        cx.form = "polar"
+        if isinstance(radius, (int, float)):
+            radius = math_blocks.number(radius)
+        if isinstance(angle, (int, float)):
+            angle = math_blocks.number(angle)
+            
+        cx.radius = radius
+        cx.angle = angle
+        return cx
+
+    def to_polar(self):
+        radius = math.sqrt(self.real.evaluate()**2 + self.imaginary.evaluate()**2)
+        angle = math.atan2(self.imaginary.evaluate(), self.real.evaluate())
+
+        return complex_number.from_polar(angle, radius, sign=self.sign)
+        
