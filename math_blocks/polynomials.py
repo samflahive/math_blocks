@@ -20,8 +20,6 @@ class polynomial(math_blocks.chain):
         return math_blocks.chain([self, other])
 
 
-
-
     def __mul__(self, other):
         if isinstance(other, polynomial):
             items = []

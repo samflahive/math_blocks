@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import math_blocks
 
 class chain(math_blocks.math_block):
