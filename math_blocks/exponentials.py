@@ -60,4 +60,9 @@ class exponential(math_blocks.math_block):
           if isinstance(other, exponential) and self.base == other.base:
                return exponential(self.base, self.power+other.power, sign=(self.sign == other.sign))                    
           return math_blocks.product([self, other])
+
+     def __truediv__(self, other):
+          if isinstance(other, exponential) and self.base == other.base:
+               return exponential(self.base, self.power-other.power, sign=(self.sign == other.sign))
+          return math_blocks.fraction(self, other)
                
