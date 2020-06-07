@@ -54,7 +54,7 @@ class complex_number(math_blocks.math_block):
         return complex_number(real=self.real, imaginary=-self.imaginary, sign=self.sign)
 
     def conjugate_product(self):
-        return math_blocks.exponential(self.real,2) * math_blocks.exponential(self.imaginary,2)
+        return math_blocks.exponential(self.real,2) + math_blocks.exponential(self.imaginary,2)
 
     def __mul__(self, other):
         if isinstance(other, complex_number):
