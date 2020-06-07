@@ -61,5 +61,15 @@ class logarithm(math_blocks.math_block):
         return (self.base == other.base
                 and self.exponent == other.exponent
                 and self.sign == other.sign)
+
+    def __add__(self, other):
+        if isinstance(other, logarithm) and other.base == self.base:
+            if other.sign == self.sign:
+                return logarithm(base=self.base, exponent=self.exponent*other.exponent, sign=self.sign)
+            elif not self.sign:
+                return logarithm(base=self.base, exponent=other.exponent/self.exponent)
+            else:
+                return logarithm(base=self.base, exponent=self.exponent/other.exponent)
+        return math_blocks.chain([self, other])
         
         
