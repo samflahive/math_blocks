@@ -66,3 +66,7 @@ class fraction(math_blocks.math_block):
             return math_blocks.complex_number(real=real,  imaginary=imaginary, sign=(self.sign==self.numerator.sign))
         error_message = f"fractionc can only be split when the numerator is type chain (including children), product, or complex_number - not {type(self.numerator)}."
         raise ValueError(error_message)
+
+
+    def inverse(self):
+        return fraction(numerator=self.denominator, denominator=self.numerator, sign=self.sign)
