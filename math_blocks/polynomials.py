@@ -19,14 +19,7 @@ class polynomial(math_blocks.chain):
             return polynomial(items=combined_terms)
         return math_blocks.chain([self, other])
 
-    def ripple_sign(self):
-        # make the sign true
-        poly = deepcopy(self)
-        if not poly.sign:
-            for item in poly.items:
-                item.sign = not item.sign
-            poly.sign = True
-        return poly
+
 
 
     def __mul__(self, other):

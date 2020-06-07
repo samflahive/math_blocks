@@ -48,6 +48,15 @@ class chain(math_blocks.math_block):
             return "+(%s)" % out
         return out
 
+    def ripple_sign(self):
+        # make the sign true
+        ch = deepcopy(self)
+        if not ch.sign:
+            for item in ch.items:
+                item.sign = not item.sign
+            ch.sign = True
+        return ch
+
     def __eq__(self, other):
         if not isinstance(other, chain):
             return False
