@@ -38,3 +38,17 @@ class polynomial(math_blocks.chain):
             return polynomial(items=items, sign=(self.sign == other.sign))
         else:
             return math_blocks.product([self, other])
+
+    @staticmethod
+    def root_to_factor(var, val):
+        return math_blocks.simple_poly([1,-val], var)
+
+    @staticmethod
+    def from_roots(root_pairs):
+        # root_pairs is a list of tuples (variable, root), eg. (x, 3)
+        poly = polynomial.root_to_factor(*root_pairs[0])
+        for root_pair in root_pairs[1:]:
+            poly *= polynomial.root_to_factor(*root_pair)
+
+        return poly
+        
