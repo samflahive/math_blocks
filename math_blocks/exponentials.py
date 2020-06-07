@@ -65,4 +65,8 @@ class exponential(math_blocks.math_block):
           if isinstance(other, exponential) and self.base == other.base:
                return exponential(self.base, self.power-other.power, sign=(self.sign == other.sign))
           return math_blocks.fraction(self, other)
+
+     def rebase(self, base):
+          power = self.power * math_blocks.logarithm(self.base, base)
+          return exponential(base=base, power=power, sign=self.sign)
                
