@@ -48,3 +48,21 @@ class fraction(math_blocks.math_block):
                             denominator=self.denominator*other.denominator,
                             sign=(self.sign==other.sign))
         return math_blocks.product([self, other])
+
+    def split(self):
+        if isinstance(self.numerator, (math_blocks.chain, math_blocks.product)):
+            items = [fraction(item,
+                              self.denominator,
+                              sign=(self.numerator.sign == item.sign)) for item in self.numerator.items]
+            
+            if isinstance(self.numerator, math_blocks.chain):
+                return math_blocks.chain(items=items, sign=self.sign)
+            else:
+                return math_blocks.product(items=items, sign=self.sign)
+
+        elif isinstance(self.numerator, math_blocks.complex_number):
+            real = fraction(self.numerator.real, self.denominator)
+            imaginary = fraction(self.numerator.imaginary, self.denominator)
+            return math_blocks.complex_number(real=real,  imaginary=imaginary, sign=(self.sign==self.numerator.sign))
+        error_message = f"fractionc can only be split when the numerator is type chain (including children), product, or complex_number - not {type(self.numerator)}."
+        raise ValueError(error_message)
