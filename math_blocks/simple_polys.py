@@ -22,7 +22,7 @@ class simple_poly(polynomial):
 
     @staticmethod
     def from_roots(var, roots):
-        roots = list(map(lambda r: math_blocks.number(r), roots))
+        roots = list(map(lambda r: (math_blocks.number(r) if isinstance(r, (int, float)) else r), roots))
         # quadratic
         if len(roots) == 2:
             #(x-a)(x-b) = x^2 - (a+b)x + a*b 
