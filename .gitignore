@@ -92,7 +92,9 @@ ENV/
 env.bak/
 venv.bak/
 
-
+#visual studio
+.vs/
+.vs
 
 # mkdocs documentation
 /site
