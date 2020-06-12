@@ -7,7 +7,7 @@ class math_block:
         self.product_bracket = product_bracket
         self.chain_bracket = chain_bracket
         self.bracketed = bracketed
-        self.collapse_numbers = False
+        self.num_collapsable = False
 
 
     def __add__(self, other):
