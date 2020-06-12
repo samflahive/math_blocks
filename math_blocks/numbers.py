@@ -31,26 +31,9 @@ class number(math_block):
         return False
 
 
-    def __add__(self, other):
-        if isinstance(other, number):
-            return number(value=self.evaluate()+other.evaluate())
-        if isinstance(other, (int,float)):
-            return number(value=(self.evaluate()+other))            
-        return math_blocks.chain([self, other])
-
-    def __truediv__(self, other):
-        if isinstance(other, number):
-            return number(value=self.evaluate()/other.evaluate())
-        if isinstance(other, (int,float)):
-            return number(value=self.evaluate()/other)
-        return math_blocks.fraction(self, other)
 
     def __mul__(self, other):
-        if isinstance(other, number):
-            return number(value=self.evaluate()*other.evaluate())
-        elif isinstance(other, (int,float)):
-            return number(value=self.evaluate()*other)
-        elif isinstance(other, math_blocks.complex_number):
+        if isinstance(other, math_blocks.complex_number):
             return math_blocks.complex_number(real=other.real*self, imaginary=other.imaginary*self, sign=other.sign)
         elif isinstance(other, math_blocks.polynomial):
             return math_blocks.polynomial(items=[self*term for term in other.items], sign=other.sign)
