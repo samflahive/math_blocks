@@ -43,7 +43,7 @@ class log_add(unittest.TestCase):
         self.assertAlmostEqual(result.evaluate(), result_value)
 
 
-    def test_poly_eq(self):
+    def test_poly_add(self):
         main_log = math_blocks.logarithm(9,3)
         a = math_blocks.variable("a", value=1)
         p = math_blocks.simple_poly([1,2,3], a)
@@ -56,7 +56,7 @@ class log_add(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertAlmostEqual(result.evaluate(), result_value)
 
-    def test_chain_eq(self):
+    def test_chain_add(self):
         main_log = math_blocks.logarithm(9,3)
         alt_chain_b = math_blocks.chain([1,3,2])
 
@@ -68,13 +68,13 @@ class log_add(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertAlmostEqual(result.evaluate(), result_value)
 
-    def test_fraction_eq(self):
+    def test_log_add(self):
         main_log = math_blocks.logarithm(9,3)
         alt_log = math_blocks.logarithm(27, 3)
 
         result = main_log + alt_log
         
-        result_latex = "log_{3}243"
+        result_latex = "log_{3}9 \\cdot 27"
         result_value = 5
         
         self.assertEqual(result.latex(), result_latex)

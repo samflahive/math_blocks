@@ -43,7 +43,7 @@ class fraction_add(unittest.TestCase):
         self.assertEqual(result.evaluate(), result_value)
 
 
-    def test_poly_eq(self):
+    def test_poly_add(self):
         main_fr = math_blocks.fraction(12,2)
         a = math_blocks.variable("a", value=1)
         p = math_blocks.simple_poly([1,2,3], a)
@@ -56,7 +56,7 @@ class fraction_add(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertEqual(result.evaluate(), result_value)
 
-    def test_chain_eq(self):
+    def test_chain_add(self):
         main_fr = math_blocks.fraction(12,2)
         alt_chain_b = math_blocks.chain([1,3,2])
 
@@ -68,13 +68,13 @@ class fraction_add(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertEqual(result.evaluate(), result_value)
 
-    def test_fraction_eq(self):
+    def test_fraction_add(self):
         main_fr = math_blocks.fraction(12,2)
         alt_fr = math_blocks.fraction(12,2)
 
         result = main_fr + alt_fr
         
-        result_latex = "\\frac{24}{2}"
+        result_latex = "\\frac{12+12}{2}"
         result_value = 12
         
         self.assertEqual(result.latex(), result_latex)
@@ -82,7 +82,7 @@ class fraction_add(unittest.TestCase):
 
         result = main_fr - alt_fr
         
-        result_latex = "\\frac{-0}{2}"
+        result_latex = "\\frac{12-12}{2}"
         result_value = 0
         
         self.assertEqual(result.latex(), result_latex)

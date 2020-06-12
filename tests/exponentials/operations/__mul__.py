@@ -23,7 +23,7 @@ class exponential_mul(unittest.TestCase):
 
         result = main_ex * alt_ex
         
-        result_latex = "12^{3}"
+        result_latex = "12^{2+1}"
         result_value = 1728
         
         self.assertEqual(result.latex(), result_latex)

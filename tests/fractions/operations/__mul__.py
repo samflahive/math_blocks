@@ -43,7 +43,7 @@ class fraction_mul(unittest.TestCase):
         self.assertEqual(result.evaluate(), result_value)
 
 
-    def test_poly_eq(self):
+    def test_poly_mul(self):
         main_fr = math_blocks.fraction(12,2)
         a = math_blocks.variable("a", value=1)
         p = math_blocks.simple_poly([1,2,3], a)
@@ -56,7 +56,7 @@ class fraction_mul(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertEqual(result.evaluate(), result_value)
 
-    def test_chain_eq(self):
+    def test_chain_mul(self):
         main_fr = math_blocks.fraction(12,2)
         alt_chain_b = math_blocks.chain([1,3,2])
 
@@ -68,13 +68,13 @@ class fraction_mul(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertEqual(result.evaluate(), result_value)
 
-    def test_fraction_eq(self):
+    def test_fraction_mul(self):
         main_fr = math_blocks.fraction(12,2)
         alt_fr = math_blocks.fraction(12,2)
 
         result = main_fr * alt_fr
         
-        result_latex = "\\frac{144}{4}"
+        result_latex = "\\frac{12 \\cdot 12}{2 \\cdot 2}"
         result_value = 36
         
         self.assertEqual(result.latex(), result_latex)
@@ -82,7 +82,7 @@ class fraction_mul(unittest.TestCase):
 
         result = main_fr * -alt_fr
         
-        result_latex = "-\\frac{144}{4}"
+        result_latex = "-\\frac{12 \\cdot 12}{2 \\cdot 2}"
         result_value = -36
         
         self.assertEqual(result.latex(), result_latex)

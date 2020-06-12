@@ -6,7 +6,7 @@ import math_blocks
 class exponential_div(unittest.TestCase):
 
     
-    def test_number_mul(self):
+    def test_number_div(self):
         main_ex = math_blocks.exponential(12,2)
         n = math_blocks.number(3)
 
@@ -17,20 +17,20 @@ class exponential_div(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertEqual(result.evaluate(), result_value)
 
-    def test_exponential_mul(self):
+    def test_exponential_div(self):
         main_ex = math_blocks.exponential(12,2)
         alt_ex = math_blocks.exponential(12,1)
 
         result = main_ex / alt_ex
         
-        result_latex = "12"
+        result_latex = "12^{2-1}"
         result_value = 12
         
         self.assertEqual(result.latex(), result_latex)
         self.assertEqual(result.evaluate(), result_value)
 
 
-    def test_product_mul(self):
+    def test_product_div(self):
         main_ex = math_blocks.exponential(12,2)
         p = math_blocks.product([1,2,3])
 

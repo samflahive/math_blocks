@@ -74,7 +74,7 @@ class complex_add(unittest.TestCase):
 
         result = main_cx + a
         
-        result_latex = "4+6i"
+        result_latex = "(2+2)+(3+3)i"
         result_value = complex(4,6)
         
         self.assertEqual(result.latex(), result_latex)
@@ -82,7 +82,7 @@ class complex_add(unittest.TestCase):
 
         result = main_cx - a
         
-        result_latex = "-0-0i"
+        result_latex = "(2-2)+(3-3)i"
         result_value = complex(0,0)
         
         self.assertEqual(result.latex(), result_latex)
