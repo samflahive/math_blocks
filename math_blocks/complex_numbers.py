@@ -19,7 +19,11 @@ class complex_number(math_blocks.math_block):
         self.angle = None
 
     def evaluate(self):
-        val = complex(self.real.evaluate(), self.imaginary.evaluate())
+        r_val, i_val = self.real.evaluate(), self.imaginary.evaluate()
+        if i_val == 0:
+            val = r_val
+        else:
+            val = complex(r_val, i_val)
         if self.sign:
             return val
         return -val
@@ -47,6 +51,18 @@ class complex_number(math_blocks.math_block):
         if show_plus:
             return "+(%s)" % out
         return out
+
+    def check_num_collapsable(self):
+        self.num_collapsable = True
+        if not self.real.num_collapsable:
+            self.real.check_num_collapsable()
+            if not self.real.num_collapsable:
+                self.num_collapsable = False
+                return
+        if not self.imaginary.num_collapsable:
+            self.imaginary.check_num_collapsable()
+            if not self.imaginary.num_collapsable or self.imaginary.evaluate() != 0:
+                self.num_collapsable = False
 
     def __add__(self, other):
         if isinstance(other, complex_number):

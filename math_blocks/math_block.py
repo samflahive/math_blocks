@@ -32,3 +32,12 @@ class math_block:
 
     def __rmul__(self, other):
         return self*other
+
+    def collapse_numbers(self, confirmed=False):
+        if self.num_collapsable:
+            return math_blocks.number(value=self.evaluate())
+        elif not confirmed:
+            self.check_num_collapsable()
+            return self.collapse_numbers(confirmed=True)
+        else:
+            raise ValueError("This block cannot be collapsed into a number")

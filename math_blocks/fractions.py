@@ -26,6 +26,18 @@ class fraction(math_blocks.math_block):
         return "\\frac{%s}{%s}" % (self.numerator.latex(explicit), self.denominator.latex(explicit))
 
 
+    def check_num_collapsable(self):
+        self.num_collapsable = True
+        if not self.numerator.num_collapsable:
+            self.numerator.check_num_collapsable()
+            if not self.numerator.num_collapsable:
+                self.num_collapsable = False
+                return
+        if not self.denominator.num_collapsable:
+            self.denominator.check_num_collapsable()
+            if not self.denominator.num_collapsable or self.denominator.evaluate() == 0:
+                self.num_collapsable = False
+
     def __eq__(self, other):
         if not isinstance(other, fraction):
             return False

@@ -46,6 +46,18 @@ class product(math_block):
             return "+(%s)" % r" \cdot ".join(latex_terms)
         return r" \cdot ".join(latex_terms)
 
+    def check_num_collapsable(self):
+        self.num_collapsable = True
+        for i in self.items:
+            #  do we already know
+            if not i.num_collapsable:
+                #  check
+                i.check_num_collapsable()
+                # result of check
+                if not i.num_collapsable:
+                    self.num_collapsable = False
+                    break
+
     def __eq__(self, other):
         if not isinstance(other, product):
             return False

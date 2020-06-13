@@ -54,6 +54,20 @@ class logarithm(math_blocks.math_block):
             return "+%s" % out
         return out
 
+    
+    def check_num_collapsable(self):
+        self.num_collapsable = True
+        # todo: check for negative values - could break eval
+        if not self.base.num_collapsable:
+            self.base.check_num_collapsable()
+            if not self.base.num_collapsable:
+                self.num_collapsable = False
+                return
+        if not self.exponent.num_collapsable:
+            self.exponent.check_num_collapsable()
+            if not self.exponent.num_collapsable:
+                self.num_collapsable = False
+
     def __eq__(self, other):
         if not isinstance(other, logarithm):
             return False

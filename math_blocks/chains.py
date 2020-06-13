@@ -59,6 +59,20 @@ class chain(math_blocks.math_block):
             ch.sign = True
         return ch
 
+    def check_num_collapsable(self):
+        self.num_collapsable = True
+        for i in self.items:
+            #  do we already know
+            if not i.num_collapsable:
+                #  check
+                i.check_num_collapsable()
+                # result of check
+                if not i.num_collapsable:
+                    self.num_collapsable = False
+                    break
+        
+
+
     def __eq__(self, other):
         if not isinstance(other, chain):
             return False
