@@ -1,33 +1,29 @@
 import unittest
 
 
-from math_blocks.numbers import number
-from math_blocks.variables import variable
-from math_blocks.exponentials import exponential
-from math_blocks.polycomps import polycomp
-from math_blocks.polyterms import polyterm
-from math_blocks.polynomials import polynomial
+from math_blocks.algebra.exponentials import Exponential
+from math_blocks.algebra.polynomials import *
 
 class basic_polynomial(unittest.TestCase):
     def test_basic_latex(self):
         #y^2 + 2yz - x^2
-        y = variable("y")
-        x = variable("x")
-        p = polynomial([polyterm(coeff=1, pcomp=polycomp([exponential(y,2)])),
-                    polyterm(coeff=2, pcomp=polycomp([exponential(y,1),exponential(x,1)])),
-                    polyterm(coeff=-1, pcomp=polycomp([exponential(x,2)]))])
+        y = Variable("y")
+        x = Variable("x")
+        p = Polynomial([PolyTerm(coeff=1, pcomp=PolyComp([Exponential(y,2)])),
+                    PolyTerm(coeff=2, pcomp=PolyComp([Exponential(y,1),Exponential(x,1)])),
+                    PolyTerm(coeff=-1, pcomp=PolyComp([Exponential(x,2)]))])
         
         self.assertEqual(p.latex(), "1y^{2}+2yx-1x^{2}")
 
         self.assertEqual((-p).latex(), "-(1y^{2}+2yx-1x^{2})")
 
     def test_basic_eval(self):
-        y = variable("y")
-        x = variable("x")
+        y = Variable("y")
+        x = Variable("x")
 
-        p = polynomial([polyterm(coeff=1, pcomp=polycomp([exponential(y,2)])),
-                    polyterm(coeff=2, pcomp=polycomp([exponential(y,1),exponential(x,1)])),
-                    polyterm(coeff=-1, pcomp=polycomp([exponential(x,2)]))])
+        p = Polynomial([PolyTerm(coeff=1, pcomp=PolyComp([Exponential(y,2)])),
+                    PolyTerm(coeff=2, pcomp=PolyComp([Exponential(y,1),Exponential(x,1)])),
+                    PolyTerm(coeff=-1, pcomp=PolyComp([Exponential(x,2)]))])
         
         
         y.value = 1

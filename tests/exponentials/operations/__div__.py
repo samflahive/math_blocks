@@ -1,14 +1,14 @@
 import unittest
 
-import math_blocks
+from math_blocks.algebra.exponentials import Exponential
 
 
 class exponential_div(unittest.TestCase):
 
     
     def test_number_div(self):
-        main_ex = math_blocks.exponential(12,2)
-        n = math_blocks.number(3)
+        main_ex = Exponential(12,2)
+        n = 3
 
         result = main_ex / n
         
@@ -18,8 +18,8 @@ class exponential_div(unittest.TestCase):
         self.assertEqual(result.evaluate(), result_value)
 
     def test_exponential_div(self):
-        main_ex = math_blocks.exponential(12,2)
-        alt_ex = math_blocks.exponential(12,1)
+        main_ex = Exponential(12,2)
+        alt_ex = Exponential(12,1)
 
         result = main_ex / alt_ex
         
@@ -29,18 +29,6 @@ class exponential_div(unittest.TestCase):
         self.assertEqual(result.latex(), result_latex)
         self.assertEqual(result.evaluate(), result_value)
 
-
-    def test_product_div(self):
-        main_ex = math_blocks.exponential(12,2)
-        p = math_blocks.product([1,2,3])
-
-        result = main_ex / p
-        
-        result_latex = "\\frac{12^{2}}{1 \cdot 2 \cdot 3}"
-        result_value = 24
-        
-        self.assertEqual(result.latex(), result_latex)
-        self.assertEqual(result.evaluate(), result_value)
 
 
 

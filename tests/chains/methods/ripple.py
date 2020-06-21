@@ -1,14 +1,14 @@
 import unittest
 
-from math_blocks.chains import chain
+from math_blocks.algebra.core import Chain, Fraction
 
 class ripple_chain_test(unittest.TestCase):
     def test_chain_ripple(self):
-        ch = chain([3,2],  sign=False)
+        ch = Chain([3, Fraction(4,2)], sign=False)
         
         ripped = ch.ripple_sign()
         
-        self.assertEqual(ripped.latex(), "-3-2")
+        self.assertEqual(ripped.latex(), "-3-\\frac{4}{2}")
         
         
         self.assertEqual(ch.evaluate(), ripped.evaluate())
