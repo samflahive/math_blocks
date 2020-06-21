@@ -1,12 +1,12 @@
 import unittest
 
-from math_blocks.exponentials import exponential
+from math_blocks.algebra.exponentials import Exponential
 
 class collapse_exponential_test(unittest.TestCase):
-    def test_exponential_ripple(self):
-        ch = exponential(3,2,  sign=False)
+    def test_exponential_num(self):
+        ch = Exponential(3,Exponential(2,1), sign=False)
         
-        col = ch.collapse_numbers()
+        col = ch.to_number()
         
         self.assertEqual(col.latex(), "-9")
         

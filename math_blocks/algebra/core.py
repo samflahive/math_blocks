@@ -2,28 +2,34 @@ from copy import deepcopy
 import functools
 
 # MathBlock, Number, Chain, Fraction, Product, ItemsBlock
-
+def combine_to_num(LHS, RHS):
+    LHS_num = (isinstance(LHS, (Number, int, float)) or LHS.num_collapsable)
+    RHS_num = (isinstance(RHS, (Number, int, float)) or RHS.num_collapsable)
+    return (LHS_num and RHS_num)
 
 # uses Chain, Fraction, Product
 class MathBlock:
     def __init__(self, sign, Product_bracket=False,
-                  Chain_bracket=False, bracketed=True, block_type="mb"):
+                  Chain_bracket=False, bracketed=True, block_type="mb", num_collapsable=False):
         self.sign = sign
         self.Product_bracket = Product_bracket
         self.Chain_bracket = Chain_bracket
         self.bracketed = bracketed
-        self.num_collapsable = False
+        self.num_collapsable = num_collapsable
         self.block_type = block_type
 
 
     def __add__(self, other):
-        return Chain([self, other])
+        num_collapsable = combine_to_num(self, other)
+        return Chain([self, other], num_collapsable=num_collapsable)
 
     def __mul__(self, other):
-        return Product([self, other])
+        num_collapsable = combine_to_num(self, other)
+        return Product([self, other], num_collapsable=num_collapsable)
 
     def __truediv__(self, other):
-        return Fraction(self, other)
+        num_collapsable = combine_to_num(self, other)
+        return Fraction(self, other, num_collapsable=num_collapsable)
               
     def __neg__(self):
         new = deepcopy(self)
@@ -39,13 +45,21 @@ class MathBlock:
     def __rmul__(self, other):
         return self*other
 
+    def to_number(self):
+        if self.num_collapsable or self.equiv_num():
+            return Number(value=self.evaluate())
+        else:
+            raise ValueError("This math_block cannot be collapsed to a number.")
+            
+
+
 
 # uses MathBlock, Number
 class Number(MathBlock):
     
-    def __init__(self, value, sign=True):
+    def __init__(self, value, sign=True, num_collapsable=True):
         implied_sign = value > 0
-        MathBlock.__init__(self, sign=(implied_sign == sign), block_type="nm")
+        MathBlock.__init__(self, sign=(implied_sign == sign), block_type="nm", num_collapsable=True)
 
         value = abs(value)
         self.value = value
@@ -63,8 +77,6 @@ class Number(MathBlock):
         return -self.value
 
 
-
-
     def __eq__(self, other):
         if not isinstance(other, Number):
             if isinstance(other, (int, float)):
@@ -72,11 +84,14 @@ class Number(MathBlock):
             return False
         return (self.value == other.value and self.sign == other.sign)
 
+    def equiv_num(self):
+        self.num_collapsable = True
+        return True
 
 # uses MathBlock, Number, Fraction, Product, Chain
 class Fraction(MathBlock):
-    def __init__(self, numerator, denominator, sign=True):
-        MathBlock.__init__(self, sign=sign, block_type="fr")
+    def __init__(self, numerator, denominator, sign=True, num_collapsable=False):
+        MathBlock.__init__(self, sign=sign, block_type="fr", num_collapsable=num_collapsable)
 
         if isinstance(numerator, (int, float)):
             numerator = Number(numerator)
@@ -134,11 +149,18 @@ class Fraction(MathBlock):
     def inverse(self):
         return Fraction(numerator=self.denominator, denominator=self.numerator, sign=self.sign)
 
+    def equiv_num(self):
+        num = combine_to_num(self.numerator, self.denominator)
+        if not num:
+            num = self.numerator.equiv_num() and self.denominator.equiv_num()
+        self.num_collapsable = num
+        return num
+
 
 # uses MathBlock, Number
 class ItemsBlock(MathBlock):
-    def __init__(self, items, sign=False, block_type="ib"):
-        MathBlock.__init__(self, sign=sign, block_type=block_type)
+    def __init__(self, items, sign=False, block_type="ib", num_collapsable=False):
+        MathBlock.__init__(self, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
         MathBlock_items = []
         for item in items:
             if isinstance(item, (int, float)):
@@ -196,13 +218,26 @@ class ItemsBlock(MathBlock):
 
         return self.sign == other.sign
 
+    def equiv_num(self):
+        for item in self.items:
+            if isinstance(item, (int, float, Number)):
+                continue
+            else:
+                if item.num_collapsable:
+                    continue
+                else:
+                    if not item.equiv_num():
+                        return False
+        self.num_collapsable = True
+        return True
+
 # uses ItemsBlock
 class Chain(ItemsBlock):
     # sums of MathBlock objects
 
-    def __init__(self, items, sign=True, block_type="ch"):
+    def __init__(self, items, sign=True, block_type="ch", num_collapsable=False):
         """Chains are simple sums, items refers to a list of operands"""
-        ItemsBlock.__init__(self, items=items, sign=sign, block_type=block_type)
+        ItemsBlock.__init__(self, items=items, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
         
 
  
@@ -232,8 +267,8 @@ class Chain(ItemsBlock):
 # uses MathBlock, Chain, Product
 class Product(ItemsBlock):
     
-    def __init__(self, items, sign=True, block_type="pr"):
-        ItemsBlock.__init__(self, items=items, sign=sign, block_type=block_type)
+    def __init__(self, items, sign=True, block_type="pr", num_collapsable=False):
+        ItemsBlock.__init__(self, items=items, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
         
 
     def latex(self, explicit=False, show_plus=False):

@@ -5,8 +5,8 @@ import copy
 # uses MathBlock, Number, Exponential
 class Exponential(core.MathBlock):
      
-     def __init__(self, base, power, sign=True, block_type="ex"):
-          core.MathBlock.__init__(self, sign=sign, block_type=block_type)
+    def __init__(self, base, power, sign=True, block_type="ex", num_collapsable=False):
+          core.MathBlock.__init__(self, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
 
           # replace python Numbers with mathblock Numbers
           if isinstance(base, (int, float)):
@@ -17,62 +17,69 @@ class Exponential(core.MathBlock):
           self.base = base
           self.power = power
 
-     def evaluate(self):
-         # extract the value of the base whether its a Number or variable
-         base_value = self.base.evaluate()
-         power_value = self.power.evaluate()
-         val = base_value**power_value
-         return val if self.sign else -val
+    def evaluate(self):
+        # extract the value of the base whether its a Number or variable
+        base_value = self.base.evaluate()
+        power_value = self.power.evaluate()
+        val = base_value**power_value
+        return val if self.sign else -val
 
-     def latex(self, explicit=False, show_zero_power=True, show_plus=False):
-          base_symbol = self.base.latex(explicit=explicit)
-          if not self.base.sign or not self.base.block_type in ("nm", "vr"):
-               base_symbol = "(%s)" % base_symbol
+    def latex(self, explicit=False, show_zero_power=True, show_plus=False):
+        base_symbol = self.base.latex(explicit=explicit)
+        if not self.base.sign or not self.base.block_type in ("nm", "vr"):
+            base_symbol = "(%s)" % base_symbol
                
-          power_symbol = self.power.latex(explicit=explicit)
+        power_symbol = self.power.latex(explicit=explicit)
           
-          if explicit:
-               out = "{}^{{{}}}".format(base_symbol, power_symbol)
-          else:
-               if self.power == 0:
-                    out = "1" if show_zero_power else ""
-               elif self.power == 1:
-                    out = "{}".format(base_symbol)
-               else:
-                    out = "{}^{{{}}}".format(base_symbol, power_symbol)
+        if explicit:
+            out = "{}^{{{}}}".format(base_symbol, power_symbol)
+        else:
+            if self.power == 0:
+                out = "1" if show_zero_power else ""
+            elif self.power == 1:
+                out = "{}".format(base_symbol)
+            else:
+                out = "{}^{{{}}}".format(base_symbol, power_symbol)
 
-          if not self.sign:
-               return "-%s" % out
-          if show_plus:
-               return "+%s" % out
-          return out
+        if not self.sign:
+            return "-%s" % out
+        if show_plus:
+            return "+%s" % out
+        return out
 
-     def __eq__(self, other):
-          if not isinstance(other, Exponential):
-               return False
-          return (self.base == other.base
-                  and self.power == other.power
-                  and self.sign == other.sign)
+    def __eq__(self, other):
+        if not isinstance(other, Exponential):
+            return False
+        return (self.base == other.base
+                and self.power == other.power
+                and self.sign == other.sign)
 
-     def __mul__(self, other):
-          if isinstance(other, Exponential) and self.base == other.base:
-               return Exponential(self.base, self.power+other.power, sign=(self.sign == other.sign))                    
-          return core.MathBlock.__mul__(self, other)
+    def __mul__(self, other):
+        if isinstance(other, Exponential) and self.base == other.base:
+            return Exponential(self.base, self.power+other.power, sign=(self.sign == other.sign))                    
+        return core.MathBlock.__mul__(self, other)
 
-     def __truediv__(self, other):
-          if isinstance(other, Exponential) and self.base == other.base:
-               return Exponential(self.base, self.power-other.power, sign=(self.sign == other.sign))
-          return core.MathBlock.__truediv__(self, other)
+    def __truediv__(self, other):
+        if isinstance(other, Exponential) and self.base == other.base:
+            return Exponential(self.base, self.power-other.power, sign=(self.sign == other.sign))
+        return core.MathBlock.__truediv__(self, other)
 
-     def rebase(self, base):
-          power = self.power * Logarithm(self.base, base)
-          return Exponential(base=base, power=power, sign=self.sign)
+    def rebase(self, base):
+        power = self.power * Logarithm(self.base, base)
+        return Exponential(base=base, power=power, sign=self.sign)
+
+    def equiv_num(self):
+        num = core.combine_to_num(self.base, self.power)
+        if not num:
+            num = self.base.equiv_num() and self.power.equiv_num()
+        self.num_collapsable = num
+        return num
                
 
 # uses Number, ComplexNumber, Logarithm
 class Logarithm(core.MathBlock):
     
-    def __init__(self, exponent, base, sign=True, block_type="lg"):
+    def __init__(self, exponent, base, sign=True, block_type="lg", num_collapsable=False):
         core.MathBlock.__init__(self, sign=sign, block_type=block_type)
 
         self.eval_complex_flag = False
@@ -134,14 +141,22 @@ class Logarithm(core.MathBlock):
             else:
                 return Logarithm(base=self.base, exponent=self.exponent/other.exponent)
         return core.MathBlock.__add__(self, other)
+
+
+    def equiv_num(self):
+        num = core.combine_to_num(self.base, self.exponent)
+        if not num:
+            num = self.base.equiv_num() and self.exponent.equiv_num()
+        self.num_collapsable = num
+        return num
         
         
 
 #  uses MathBlocks, Number, ComplexNumber, Exponential
 class ComplexNumber(core.MathBlock):
 
-    def __init__(self, real, imaginary, sign=True, block_type="cx"):
-        core.MathBlock.__init__(self, sign=sign, block_type=block_type)
+    def __init__(self, real, imaginary, sign=True, block_type="cx", num_collapsable=False):
+        core.MathBlock.__init__(self, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
 
         if isinstance(real, (int, float)):
             real = core.Number(real)
@@ -241,3 +256,9 @@ class ComplexNumber(core.MathBlock):
 
         return ComplexNumber.from_polar(angle, radius, sign=self.sign)
         
+    def equiv_num(self):
+        num = core.combine_to_num(self.real, self.imaginary)
+        if not num:
+            num = self.real.equiv_num() and self.imaginary.equiv_num()
+        self.num_collapsable = num
+        return num

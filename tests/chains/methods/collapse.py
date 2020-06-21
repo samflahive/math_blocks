@@ -1,12 +1,12 @@
 import unittest
 
-import math_blocks
+from math_blocks.algebra.core import Number, Chain, Fraction
 
 class collapse_chain_test(unittest.TestCase):
     def test_chain_collapse(self):
-        ch = math_blocks.chain([3,2],  sign=False)
+        ch = Chain([3,2],  sign=False)
         
-        col = ch.collapse_numbers()
+        col = ch.to_number()
         
         self.assertEqual(col.latex(), "-5")
         
@@ -14,14 +14,12 @@ class collapse_chain_test(unittest.TestCase):
         self.assertEqual(ch.evaluate(), col.evaluate())
 
     def test_advanced_chain_collapse(self):
-        f = math_blocks.fraction(3,2)
-        cx = math_blocks.complex_number(2,0, sign=False)
-        p = math_blocks.product([f,cx])
-        ch = math_blocks.chain([3,2,p],  sign=False)
+        f = Fraction(Fraction(4,2), 2) # 1
+        ch = Chain([Chain([3,2]),f],  sign=False) # -(5+1) = -6
         
-        col = ch.collapse_numbers()
+        col = ch.to_number()
         
-        self.assertEqual(col.latex(), "-2.0")
+        self.assertEqual(col.latex(), "-6.0")
         
         
         self.assertEqual(ch.evaluate(), col.evaluate())

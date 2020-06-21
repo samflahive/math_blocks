@@ -1,12 +1,12 @@
 import unittest
 
-from math_blocks.logarithms import logarithm
+from math_blocks.algebra.exponentials import Logarithm
 
 class collapse_logarithm_test(unittest.TestCase):
     def test_logarithm_collapse(self):
-        ch = logarithm(100,10,  sign=False)
+        ch = Logarithm(100,10, sign=False)
         
-        col = ch.collapse_numbers()
+        col = ch.to_number()
         
         self.assertEqual(col.latex(), "-2.0")
         

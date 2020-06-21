@@ -5,11 +5,11 @@ from copy import deepcopy
 
 # uses Product, PolyComp
 class PolyComp(core.Product):
-    def __init__(self, expos, sign=True, block_type="pc"):
+    def __init__(self, expos, sign=True, block_type="pc", num_collapsable=False):
         # todo: add integrety checks for Variable^Number
         # add option to avoid integrity check - eg for math_board exps not MathBlock exps
         
-        core.Product.__init__(self, items=expos, sign=sign, block_type=block_type)
+        core.Product.__init__(self, items=expos, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
         d_var = {}
 
         # save dict of Variables involved
@@ -41,14 +41,14 @@ class PolyComp(core.Product):
 # uses MathBlock, Number, PolyTerm
 class PolyTerm(core.MathBlock):
 
-    def __init__(self, coeff, pcomp, sign=True, block_type="pt"):
+    def __init__(self, coeff, pcomp, sign=True, block_type="pt", num_collapsable=False):
         if isinstance(coeff, (int,float)):
             coeff = core.Number(coeff)
         # integrate coeff sign into PolyTerm parent
         sign = sign and coeff.sign
         coeff.sign = True
         
-        core.MathBlock.__init__(self, sign=sign, block_type=block_type)
+        core.MathBlock.__init__(self, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
         self.coeff = coeff
         self.pcomp = pcomp
 
@@ -89,11 +89,15 @@ class PolyTerm(core.MathBlock):
                 and self.pcomp == other.pcomp
                 and self.sign == other.sign)
 
+    def equiv_num(self):
+        self.num_collapable = False
+        return False
+
 
 # uses Chain, Polynomial, SimplePoly
 class Polynomial(core.Chain):
-    def __init__(self, items, sign=True, block_type="py"):
-        core.Chain.__init__(self, items=items, sign=sign, block_type=block_type)
+    def __init__(self, items, sign=True, block_type="py", num_collapsable=False):
+        core.Chain.__init__(self, items=items, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
 
 
     def __add__(self, other):
@@ -135,7 +139,7 @@ class Polynomial(core.Chain):
         
 # uses Polynomial, PolyComp, PolyTerm, Number, SimplePoly
 class SimplePoly(Polynomial):
-    def __init__(self, coeffs, var, start_power=None, sign=True, block_type="sp"):
+    def __init__(self, coeffs, var, start_power=None, sign=True, block_type="sp", num_collapsable=False):
         if start_power == None:
             start_power = len(coeffs) - 1
 
@@ -168,8 +172,8 @@ class SimplePoly(Polynomial):
 
 # uses MathBlock, Number, Polynomial, ComplexNumber
 class Variable(core.MathBlock):
-    def __init__(self, symbol, value=None, sign=True, block_type="vr"):
-        core.MathBlock.__init__(self, sign=sign, block_type=block_type)
+    def __init__(self, symbol, value=None, sign=True, block_type="vr", num_collapsable=False):
+        core.MathBlock.__init__(self, sign=sign, block_type=block_type, num_collapsable=num_collapsable)
         self.symbol = symbol
         self.sign = sign
         if isinstance(value, (int, float)):
@@ -209,4 +213,8 @@ class Variable(core.MathBlock):
         if not isinstance(other, Variable):
             return False
         return (self.symbol == other.symbol and self.sign == other.sign)
+
+    def equiv_num(self):
+        self.num_collapsable = False
+        return False
             
