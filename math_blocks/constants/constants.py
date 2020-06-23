@@ -6,6 +6,7 @@ class Constant:
         self.value = value
         self.id = id
         self.sign = sign
+        block_type = "C"
 
     def latex(self, explicit=False, show_plus=False):
         if not self.sign:
