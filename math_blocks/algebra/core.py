@@ -190,7 +190,7 @@ class ItemsBlock(MathBlock):
         ib = deepcopy(self)
         if not ib.sign:
             for item in ib.items:
-                item.sign = not item.sign
+                item = -item
             ib.sign = True
         return ib
 
