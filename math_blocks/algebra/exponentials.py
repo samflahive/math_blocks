@@ -1,4 +1,5 @@
 from . import core
+import math_blocks.constants
 import math
 import copy
 
@@ -112,6 +113,24 @@ class Logarithm(core.MathBlock):
         return value_out if self.sign else -value_out
     
     def latex(self, explicit=False, show_plus=False):
+        if isinstance(self.base, math_blocks.constants.Constant) and self.base.symbol == "e":
+            return self.ln_latex(explicit=explicit, show_plus=show_plus)
+        else:
+            return self.log_latex(explicit=explicit, show_plus=show_plus)
+
+    def ln_latex(self, explicit=False, show_plus=False):
+        exponent_symbol = self.exponent.latex()
+        if explicit:
+            out = "ln(%s)" % exponent_symbol
+        else:
+            out = "ln%s" % exponent_symbol
+        if not self.sign:
+            return "-%s" % out
+        if show_plus:
+            return "+%s" % out
+        return out
+
+    def log_latex(self, explicit=False, show_plus=False):
         exponent_symbol = self.exponent.latex()
         base_symbol = self.base.latex()
         if explicit:
